@@ -35,7 +35,6 @@
         return NO;
     }
     return YES;
-    
 }
 
 -(BOOL)isEqual:(id)object {
