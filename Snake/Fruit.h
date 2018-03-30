@@ -7,7 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Coordinate.h"
 
 @interface Fruit : NSObject
-
+@property (strong, atomic, readwrite) Coordinate* coordinate;
+-(instancetype) initWithCoordinateX: (NSInteger) x cooridnateY:(NSInteger) y;
 @end

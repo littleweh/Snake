@@ -8,6 +8,13 @@
 
 #import "Fruit.h"
 
-@implementation Fruit
 
+@implementation Fruit
+-(instancetype) initWithCoordinateX: (NSInteger) x cooridnateY:(NSInteger) y {
+    if ([super init]) {
+        Coordinate* coordinate = [[Coordinate alloc] initWithCoordinateX:x coordinateY:y];
+        self.coordinate = coordinate;
+    }
+    return self;
+}
 @end
