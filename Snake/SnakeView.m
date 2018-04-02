@@ -7,6 +7,9 @@
 //
 
 #import "SnakeView.h"
+#import "Coordinate.h"
+
+#define blockSize 20.0
 
 @interface SnakeView() {
     int maxY;
@@ -21,6 +24,16 @@
 // An empty implementation adversely affects performance during animation.
 - (void)drawRect:(CGRect)rect {
     // Drawing code
+}
+
+-(void) drawSnake: (NSMutableArray*) snake {
+    
+}
+
+-(CGPoint) modelPointToViewPoint: (Coordinate*) point {
+    NSInteger newX = (point.x - midX) % maxX;
+    NSInteger newY = (point.y - midY) % maxY;
+    return CGPointMake(newX * blockSize, newY * blockSize);
 }
 
 - (void) setMaxY: (int) maxY {

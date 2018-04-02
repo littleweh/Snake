@@ -7,7 +7,22 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Coordinate.h"
+#import "Snake.h"
+#import "Fruit.h"
 
-@interface SnakeView : UIView
+@class SnakeView;
+
+@protocol SnakeViewDelegate
+-(Snake*) snakeFromSnakeView: (SnakeView*) snakeView;
+-(Fruit*) fruitFromSnakeView: (SnakeView*) snakeView;
+
+@end
+
+@interface SnakeView : UIView {
+    id <SnakeViewDelegate> delegate;
+}
+@property (weak, nonatomic) id <SnakeViewDelegate> delegate;
+-(CGPoint) modelPointToViewPoint: (Coordinate*) point;
 
 @end
