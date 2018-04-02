@@ -19,10 +19,12 @@
 
 @end
 
-@interface SnakeView : UIView {
-    id <SnakeViewDelegate> delegate;
-}
+@interface SnakeView : UIView 
 @property (weak, nonatomic) id <SnakeViewDelegate> delegate;
--(CGPoint) modelPointToViewPoint: (Coordinate*) point;
-
 @end
+
+@interface SnakeView()
+-(CGPoint) modelPointToViewPoint: (Coordinate*) point;
+-(instancetype) initWithFrame: (CGRect) frame;
+@end
+

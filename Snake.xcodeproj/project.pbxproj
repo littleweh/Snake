@@ -103,8 +103,7 @@
 				79E7A183206A33B700866F1A /* Info.plist */,
 				79E7A184206A33B700866F1A /* main.m */,
 				79F75AB42071CF0F008FEE75 /* Model */,
-				79F75AB12071CF03008FEE75 /* SnakeView.h */,
-				79F75AB22071CF03008FEE75 /* SnakeView.m */,
+				79F75AE520720B59008FEE75 /* View */,
 			);
 			path = Snake;
 			sourceTree = "<group>";
@@ -129,6 +128,15 @@
 				792B97FE206C78B5003BABCB /* Fruit.m */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		79F75AE520720B59008FEE75 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				79F75AB12071CF03008FEE75 /* SnakeView.h */,
+				79F75AB22071CF03008FEE75 /* SnakeView.m */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

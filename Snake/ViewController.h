@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SnakeView.h"
 
-@interface ViewController : UIViewController
+@interface ViewController : UIViewController <SnakeViewDelegate>
+@property SnakeView* snakeView;
+
 @end
 
