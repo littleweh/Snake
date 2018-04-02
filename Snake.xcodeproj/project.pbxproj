@@ -17,6 +17,7 @@
 		79E7A182206A33B700866F1A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 79E7A180206A33B700866F1A /* LaunchScreen.storyboard */; };
 		79E7A185206A33B700866F1A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 79E7A184206A33B700866F1A /* main.m */; };
 		79E7A18F206A33B800866F1A /* SnakeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 79E7A18E206A33B800866F1A /* SnakeTests.m */; };
+		79F75AB32071CF03008FEE75 /* SnakeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 79F75AB22071CF03008FEE75 /* SnakeView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,8 @@
 		79E7A18A206A33B800866F1A /* SnakeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SnakeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		79E7A18E206A33B800866F1A /* SnakeTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SnakeTests.m; sourceTree = "<group>"; };
 		79E7A190206A33B800866F1A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		79F75AB12071CF03008FEE75 /* SnakeView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SnakeView.h; sourceTree = "<group>"; };
+		79F75AB22071CF03008FEE75 /* SnakeView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SnakeView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,12 +102,9 @@
 				79E7A180206A33B700866F1A /* LaunchScreen.storyboard */,
 				79E7A183206A33B700866F1A /* Info.plist */,
 				79E7A184206A33B700866F1A /* main.m */,
-				79C05747206B81CA00F71637 /* Snake.h */,
-				79C05748206B81CA00F71637 /* Snake.m */,
-				79C0574A206B9A9800F71637 /* Coordinate.h */,
-				79C0574B206B9A9800F71637 /* Coordinate.m */,
-				792B97FD206C78B5003BABCB /* Fruit.h */,
-				792B97FE206C78B5003BABCB /* Fruit.m */,
+				79F75AB42071CF0F008FEE75 /* Model */,
+				79F75AB12071CF03008FEE75 /* SnakeView.h */,
+				79F75AB22071CF03008FEE75 /* SnakeView.m */,
 			);
 			path = Snake;
 			sourceTree = "<group>";
@@ -116,6 +116,19 @@
 				79E7A190206A33B800866F1A /* Info.plist */,
 			);
 			path = SnakeTests;
+			sourceTree = "<group>";
+		};
+		79F75AB42071CF0F008FEE75 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				79C05747206B81CA00F71637 /* Snake.h */,
+				79C05748206B81CA00F71637 /* Snake.m */,
+				79C0574A206B9A9800F71637 /* Coordinate.h */,
+				79C0574B206B9A9800F71637 /* Coordinate.m */,
+				792B97FD206C78B5003BABCB /* Fruit.h */,
+				792B97FE206C78B5003BABCB /* Fruit.m */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -220,6 +233,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				79F75AB32071CF03008FEE75 /* SnakeView.m in Sources */,
 				792B97FF206C78B5003BABCB /* Fruit.m in Sources */,
 				79C05749206B81CA00F71637 /* Snake.m in Sources */,
 				79E7A17A206A33B700866F1A /* ViewController.m in Sources */,

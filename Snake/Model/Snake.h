@@ -10,10 +10,10 @@
 #import "Coordinate.h"
 
 typedef enum NSUInteger {
-    left,
-    right,
-    up,
-    down
+    left = 0,
+    right = 1,
+    up = 2,
+    down = 3
 } Direction;
 
 @interface Snake : NSObject

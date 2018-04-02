@@ -22,15 +22,15 @@
     
     [self showSnakePosition];
     
-    Coordinate* pointZero = [[Coordinate alloc] initWithCoordinateX:0 coordinateY:0];
-    BOOL flag = [self.snake isHeadHitPoint:pointZero];
-    NSLog(flag? @"Yes" : @"NO");
+//    Coordinate* pointZero = [[Coordinate alloc] initWithCoordinateX:0 coordinateY:0];
+//    BOOL flag = [self.snake isHeadHitPoint:pointZero];
+//    NSLog(flag? @"Yes" : @"NO");
     
-    NSLog(@"Move one step with direction: %u", self.snake.direction);
-    [self.snake moveOneStep];
-    [self showSnakePosition];
+//    NSLog(@"Move one step with direction: %u", self.snake.direction);
+//    [self.snake moveOneStep];
+//    [self showSnakePosition];
     
-    NSLog(@"Add body length with direction: %u", self.snake.direction);
+//    NSLog(@"Add body length with direction: %u", self.snake.direction);
     [self.snake addBodyLengthNumber:5];
     [self showSnakePosition];
     
@@ -52,7 +52,7 @@
     [self showSnakePosition];
 
     BOOL flag2 = [self.snake isHeadHitBody];
-    NSLog(flag? @"hit": @"not hit");
+    NSLog(flag2? @"hit": @"not hit");
     
     
 //    [self.snake changeDirection:up];
