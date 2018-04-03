@@ -6,14 +6,14 @@
 //  Copyright © 2018 Ada Kao. All rights reserved.
 //
 
-#import "SnakeView.h"
+#import "SnakeGameView.h"
 #import "Coordinate.h"
 #import "Snake.h"
 #import "Fruit.h"
 
 #define blockSize 20.0
 
-@interface SnakeView() {
+@interface SnakeGameView() {
     int maxY;
     int maxX;
     int midY;
@@ -21,7 +21,7 @@
 }
 @end
 
-@implementation SnakeView
+@implementation SnakeGameView
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
 
@@ -36,14 +36,37 @@
     return self;
 }
 
+-(void)passDirectionByHandlingGestureRecognizedBy: (UISwipeGestureRecognizer*) recognizer {
+    if ([self.delegate respondsToSelector:@selector(snakeGameViewGetNewDirection:)]) {
+        UISwipeGestureRecognizerDirection direction = recognizer.direction;        
+        switch (direction) {
+            case UISwipeGestureRecognizerDirectionUp:
+                [self.delegate snakeGameViewGetNewDirection:up];
+                break;
+            case UISwipeGestureRecognizerDirectionDown:
+                [self.delegate snakeGameViewGetNewDirection:down];
+                break;
+            case UISwipeGestureRecognizerDirectionLeft:
+                [self.delegate snakeGameViewGetNewDirection:left];
+                break;
+            case UISwipeGestureRecognizerDirectionRight:
+                [self.delegate snakeGameViewGetNewDirection:right];
+                break;
+        }
+    }
+}
+
 - (void)drawRect:(CGRect)rect {
     [super drawRect:rect];
     
-    Snake* snake = [delegate snakeFromSnakeView:self];
-    [self drawSnake:snake.snakeBody];
-    
-    Fruit* fruit = [delegate fruitFromSnakeView:self];
-    [self drawFruit: fruit];
+    if ([self.delegate respondsToSelector:@selector(snakeForSnakeGameView:)]) {
+        Snake* snake = [delegate snakeForSnakeGameView:self];
+        [self drawSnake:snake.snakeBody];
+    }
+    if ([self.delegate respondsToSelector:@selector(fruitForSnakeGameView:)]) {
+        Fruit* fruit = [delegate fruitForSnakeGameView:self];
+        [self drawFruit: fruit];
+    }
     
 }
 
@@ -81,17 +104,6 @@
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSetRGBFillColor(context, 0.0, 1.0, 0.0, 1.0);
     CGContextFillEllipseInRect(context, rect);
-}
-
-
-
-- (void) setMaxY: (int) maxY {
-    self.maxY = maxY;
-    self->midY = maxY / 2;
-}
--(void) setMaxX: (int) maxX {
-    self.maxX = maxX;
-    self->midX = maxX / 2;
 }
 
 @synthesize delegate;

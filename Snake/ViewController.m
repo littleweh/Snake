@@ -8,7 +8,7 @@
 
 #import "ViewController.h"
 #import "Snake.h"
-#import "SnakeView.h"
+#import "SnakeGameView.h"
 #import "Fruit.h"
 
 @interface ViewController ()
@@ -28,18 +28,33 @@
     
     [self showSnakePosition];
 
-    
     self.view.backgroundColor = [UIColor blackColor];
     CGRect gameView = CGRectMake(self.view.bounds.origin.x + 20, self.view.bounds.origin.y + 20, self.view.bounds.size.width - 40, self.view.bounds.size.height - 40);
-    self.snakeView = [[SnakeView alloc] initWithFrame:gameView];
-    self.snakeView.backgroundColor = [UIColor whiteColor];
+    self.snakeGameView = [[SnakeGameView alloc] initWithFrame:gameView];
+    self.snakeGameView.backgroundColor = [UIColor whiteColor];
     
+    [self.view addSubview:self.snakeGameView];
+    [self.snakeGameView setDelegate:self];
     
+//    [self addSwipeGestureRecognizerToSnakeGameView];
     
-    [self.view addSubview:self.snakeView];
-    [self.snakeView setDelegate:self];
+    UISwipeGestureRecognizer *swipeLeft = [[UISwipeGestureRecognizer alloc] initWithTarget:self.snakeGameView action:@selector(passDirectionByHandlingGestureRecognizedBy:)];
+    [swipeLeft setDirection: UISwipeGestureRecognizerDirectionLeft];
+    [self.snakeGameView addGestureRecognizer:swipeLeft];
     
-//    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(50, 50, 100, 50)];
+    UISwipeGestureRecognizer *swipeRight = [[UISwipeGestureRecognizer alloc] initWithTarget:self.snakeGameView action:@selector(passDirectionByHandlingGestureRecognizedBy:)];
+    [swipeRight setDirection: UISwipeGestureRecognizerDirectionRight];
+    [self.snakeGameView addGestureRecognizer:swipeRight];
+    
+    UISwipeGestureRecognizer *swipeUp = [[UISwipeGestureRecognizer alloc] initWithTarget:self.snakeGameView action:@selector(passDirectionByHandlingGestureRecognizedBy:)];
+    [swipeUp setDirection: UISwipeGestureRecognizerDirectionUp];
+    [self.snakeGameView addGestureRecognizer:swipeUp];
+    
+    UISwipeGestureRecognizer *swipeDown = [[UISwipeGestureRecognizer alloc] initWithTarget:self.snakeGameView action:@selector(passDirectionByHandlingGestureRecognizedBy:)];
+    [swipeDown setDirection: UISwipeGestureRecognizerDirectionDown];
+    [self.snakeGameView addGestureRecognizer:swipeDown];
+  
+    //    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(50, 50, 100, 50)];
 //    button.backgroundColor = [UIColor whiteColor];
 //    [button setTitle:@"test" forState:UIControlStateNormal];
 //    [button setTintColor:[UIColor blueColor]];
@@ -110,18 +125,43 @@
    
 }
 
+-(void) addSwipeGestureRecognizerToSnakeGameView {
+    UISwipeGestureRecognizer *swipeLeft = [[UISwipeGestureRecognizer alloc] initWithTarget:self.snakeGameView action:@selector(passDirectionByHandlingGestureRecognizedBy:)];
+    [swipeLeft setDirection: UISwipeGestureRecognizerDirectionLeft];
+    [self.snakeGameView addGestureRecognizer:swipeLeft];
+    
+    UISwipeGestureRecognizer *swipeRight = [[UISwipeGestureRecognizer alloc] initWithTarget:self.snakeGameView action:@selector(passDirectionByHandlingGestureRecognizedBy:)];
+    [swipeRight setDirection: UISwipeGestureRecognizerDirectionRight];
+    [self.snakeGameView addGestureRecognizer:swipeRight];
+    
+    UISwipeGestureRecognizer *swipeUp = [[UISwipeGestureRecognizer alloc] initWithTarget:self.snakeGameView action:@selector(passDirectionByHandlingGestureRecognizedBy:)];
+    [swipeUp setDirection: UISwipeGestureRecognizerDirectionUp];
+    [self.snakeGameView addGestureRecognizer:swipeUp];
+    
+    UISwipeGestureRecognizer *swipeDown = [[UISwipeGestureRecognizer alloc] initWithTarget:self.snakeGameView action:@selector(passDirectionByHandlingGestureRecognizedBy:)];
+    [swipeDown setDirection: UISwipeGestureRecognizerDirectionDown];
+    [self.snakeGameView addGestureRecognizer:swipeDown];
+}
+
 - (void) showSnakePosition {
     for (Coordinate* body in self.snake.snakeBody) {
         NSLog(@"x: %ld, y: %ld", (long)body.x, body.y);
     }
 }
 
--(Snake*) snakeFromSnakeView: (SnakeView*) snakeView {
+-(Snake*) snakeForSnakeGameView: (SnakeGameView*) snakeView {
     return self.snake;
 }
 
--(Fruit*) fruitFromSnakeView: (SnakeView*) snakeView {
+-(Fruit*) fruitForSnakeGameView: (SnakeGameView*) snakeView {
     return self.fruit;
+}
+
+-(void) snakeGameViewGetNewDirection: (Direction) newDirection {
+    NSLog(@"%d", newDirection);
+    [self.snake changeDirection:newDirection];
+    [self.snake moveOneStep];
+    [self showSnakePosition];
 }
 
 - (void)didReceiveMemoryWarning {
