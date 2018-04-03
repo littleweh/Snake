@@ -11,6 +11,7 @@
 
 @interface ViewController : UIViewController <SnakeGameViewDelegate>
 @property (nonatomic, readwrite) SnakeGameView* snakeGameView;
+@property (nonatomic, readwrite) UIButton* startButton;
 
 @end
 
