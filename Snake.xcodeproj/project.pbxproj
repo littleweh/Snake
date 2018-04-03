@@ -133,8 +133,8 @@
 		79F75AE520720B59008FEE75 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				79F75AB22071CF03008FEE75 /* SnakeGameView.m */,
 				79CCB17020732A1A00E1BF6C /* SnakeGameView.h */,
+				79F75AB22071CF03008FEE75 /* SnakeGameView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";

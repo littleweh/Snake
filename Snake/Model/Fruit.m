@@ -10,8 +10,10 @@
 
 
 @implementation Fruit
--(instancetype) initWithCoordinateX: (NSInteger) x cooridnateY:(NSInteger) y {
+-(instancetype) init {
     if ([super init]) {
+        NSInteger x = arc4random();
+        NSInteger y = arc4random();
         Coordinate* coordinate = [[Coordinate alloc] initWithCoordinateX:x coordinateY:y];
         self.coordinate = coordinate;
     }

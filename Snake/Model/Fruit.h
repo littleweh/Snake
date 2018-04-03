@@ -11,5 +11,5 @@
 
 @interface Fruit : NSObject
 @property (strong, atomic, readwrite) Coordinate* coordinate;
--(instancetype) initWithCoordinateX: (NSInteger) x cooridnateY:(NSInteger) y;
+-(instancetype) init;
 @end

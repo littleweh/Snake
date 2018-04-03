@@ -14,6 +14,7 @@
 @interface ViewController ()
 @property Snake* snake;
 @property Fruit* fruit;
+@property NSTimer* myTimer;
 @end
 
 @implementation ViewController
@@ -21,12 +22,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    Coordinate* center = [[Coordinate alloc] initWithCoordinateX:0 coordinateY:0];
-    self.snake = [[Snake alloc] initWithHeadPositionPoint:center];
-    self.fruit = [[Fruit alloc] initWithCoordinateX:-2 cooridnateY:-2];
-    
-    [self showSnakePosition];
-
     CGRect gameView = CGRectMake(self.view.bounds.origin.x, self.view.bounds.origin.y, self.view.bounds.size.width, self.view.bounds.size.height);
     self.snakeGameView = [[SnakeGameView alloc] initWithFrame:gameView];
     
@@ -43,11 +38,61 @@
     
 }
 
+-(void) initializeTimer {
+    float theInterval = 1.0 / 2.0;
+    self.myTimer = [NSTimer
+                    scheduledTimerWithTimeInterval:theInterval
+                    target:self
+                    selector:@selector(playSnakeGame)
+                    userInfo:nil
+                    repeats:YES
+                    ];
+}
+
+-(void)playSnakeGame {
+    [self.snake moveOneStep];
+    
+    // ToDo: delete
+    [self showSnakePosition];
+    [self showFruitPosition];
+
+    [self.snakeGameView setNeedsLayout];
+    [self.snakeGameView setNeedsDisplay];
+    
+    if ([self.snake isHeadHitBody]) {
+        [self endGame];
+    }
+    
+    if([self.snake isHeadHitPoint:self.fruit.coordinate]) {
+        [self.snake addBodyLengthNumber:2];
+        self.fruit = [[Fruit alloc] init];
+    }
+    
+}
+
 -(void) startGame {
     self.startButton.hidden = YES;
     self.snakeGameView.hidden = NO;
     
+    Coordinate* center = [[Coordinate alloc] initWithCoordinateX:0 coordinateY:0];
+    self.snake = [[Snake alloc] initWithHeadPositionPoint:center];
+    self.fruit = [[Fruit alloc] init];
     
+    [self showSnakePosition];
+
+    [self.view layoutIfNeeded];
+    [self.snakeGameView setNeedsLayout];
+    [self.snakeGameView setNeedsDisplay];
+    
+    [self initializeTimer];
+    
+}
+
+-(void) endGame {
+    self.snakeGameView.hidden = YES;
+    self.startButton.hidden = NO;
+    [self.myTimer invalidate];
+    self.myTimer = nil;
 }
 
 -(void) setupStartButton {
@@ -102,12 +147,6 @@
     [self.snakeGameView addGestureRecognizer:swipeDown];
 }
 
-- (void) showSnakePosition {
-    for (Coordinate* body in self.snake.snakeBody) {
-        NSLog(@"x: %ld, y: %ld", (long)body.x, body.y);
-    }
-}
-
 -(Snake*) snakeForSnakeGameView: (SnakeGameView*) snakeView {
     return self.snake;
 }
@@ -127,5 +166,14 @@
     [super didReceiveMemoryWarning];
 }
 
+- (void) showSnakePosition {
+    for (Coordinate* body in self.snake.snakeBody) {
+        NSLog(@"x: %ld, y: %ld", (long)body.x, body.y);
+    }
+}
+
+- (void) showFruitPosition {
+    NSLog(@"Fruit - x: %ld, y: %ld", (long)self.fruit.coordinate.x, self.fruit.coordinate.y);
+}
 
 @end
