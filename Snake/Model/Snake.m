@@ -15,16 +15,24 @@
 @end
 
 @implementation Snake
--(instancetype) initWithHeadPositionPoint: (Coordinate*) point;{
+
+-(instancetype) initWithGameField: (GameField*) gameField {
     if ([super init]) {
         self.direction = left;
         bodyLength = 2;
         addLengthNum = 2;
 
+        self.gameField = gameField;
+
         NSMutableArray* body = [[NSMutableArray alloc] init];
-        [body insertObject:point atIndex:0];
-        Coordinate* secondPoint = [[Coordinate alloc] initWithCoordinateX:point.x+1 coordinateY:point.y];
-        [body insertObject:secondPoint atIndex:0];
+        Coordinate* head = [[Coordinate alloc] initWithCoordinateX:0 coordinateY:0];
+        [body insertObject:head atIndex:0];
+        
+        for (int i = 1; i < bodyLength; i++) {
+            Coordinate *bodyPoint = [[Coordinate alloc] initWithCoordinateX: (head.x+i) % gameField.width
+                                                                coordinateY:head.y];
+            [body insertObject:bodyPoint atIndex:0];
+        }
         
         [self setSnakeBody:body];
     }
@@ -32,20 +40,23 @@
 }
 -(void) moveOneStep {
     Coordinate* oldHead = self.snakeBody.lastObject;
-    // ToDo: errorhandling: check oldHead is not nil
     Coordinate* newHead = [oldHead copy];
     switch (self.direction) {
         case left:
-            newHead.x--;
+            newHead.x = (oldHead.x-1) % self.gameField.width;
+            if (newHead.x < 0) newHead.x += self.gameField.width;
             break;
         case right:
-            newHead.x++;
+            newHead.x = (oldHead.x+1) % self.gameField.width;
+            if (newHead.x < 0) newHead.x += self.gameField.width;
             break;
         case up:
-            newHead.y--;
+            newHead.y = (oldHead.y-1) % self.gameField.height;
+            if (newHead.y < 0) newHead.y += self.gameField.height;
             break;
         case down:
-            newHead.y++;
+            newHead.y = (oldHead.y+1) % self.gameField.height;
+            if (newHead.y < 0) newHead.y += self.gameField.height;
             break;
         default:
             NSLog(@"no direction set");

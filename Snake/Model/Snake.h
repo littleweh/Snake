@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "Coordinate.h"
+#import "GameField.h"
 
 typedef enum NSUInteger {
     left = 0,
@@ -19,8 +20,9 @@ typedef enum NSUInteger {
 @interface Snake : NSObject
 @property (strong, atomic, readwrite) NSMutableArray* snakeBody;
 @property (assign, atomic, readwrite) Direction direction;
+@property (strong, atomic, readwrite) GameField* gameField;
 
--(instancetype) initWithHeadPositionPoint: (Coordinate*) point;
+-(instancetype) initWithGameField: (GameField*) gameField;
 -(void) moveOneStep;
 -(void) addBodyLengthNumber: (NSUInteger) number;
 -(BOOL) isHeadHitBody;

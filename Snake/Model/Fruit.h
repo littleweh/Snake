@@ -8,8 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import "Coordinate.h"
+#import "GameField.h"
 
 @interface Fruit : NSObject
 @property (strong, atomic, readwrite) Coordinate* coordinate;
--(instancetype) init;
+-(instancetype) initWithGameField: (GameField*) gameField;
 @end

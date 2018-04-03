@@ -10,6 +10,7 @@
 		792B97FF206C78B5003BABCB /* Fruit.m in Sources */ = {isa = PBXBuildFile; fileRef = 792B97FE206C78B5003BABCB /* Fruit.m */; };
 		79C05749206B81CA00F71637 /* Snake.m in Sources */ = {isa = PBXBuildFile; fileRef = 79C05748206B81CA00F71637 /* Snake.m */; };
 		79C0574C206B9A9800F71637 /* Coordinate.m in Sources */ = {isa = PBXBuildFile; fileRef = 79C0574B206B9A9800F71637 /* Coordinate.m */; };
+		79CCB17620735F0700E1BF6C /* GameField.m in Sources */ = {isa = PBXBuildFile; fileRef = 79CCB17520735F0700E1BF6C /* GameField.m */; };
 		79E7A177206A33B700866F1A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 79E7A176206A33B700866F1A /* AppDelegate.m */; };
 		79E7A17A206A33B700866F1A /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 79E7A179206A33B700866F1A /* ViewController.m */; };
 		79E7A17D206A33B700866F1A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 79E7A17B206A33B700866F1A /* Main.storyboard */; };
@@ -38,6 +39,8 @@
 		79C0574A206B9A9800F71637 /* Coordinate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Coordinate.h; sourceTree = "<group>"; };
 		79C0574B206B9A9800F71637 /* Coordinate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Coordinate.m; sourceTree = "<group>"; };
 		79CCB17020732A1A00E1BF6C /* SnakeGameView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SnakeGameView.h; sourceTree = "<group>"; };
+		79CCB17420735F0700E1BF6C /* GameField.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameField.h; sourceTree = "<group>"; };
+		79CCB17520735F0700E1BF6C /* GameField.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GameField.m; sourceTree = "<group>"; };
 		79E7A172206A33B700866F1A /* Snake.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Snake.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		79E7A175206A33B700866F1A /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		79E7A176206A33B700866F1A /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -126,6 +129,8 @@
 				79C0574B206B9A9800F71637 /* Coordinate.m */,
 				792B97FD206C78B5003BABCB /* Fruit.h */,
 				792B97FE206C78B5003BABCB /* Fruit.m */,
+				79CCB17420735F0700E1BF6C /* GameField.h */,
+				79CCB17520735F0700E1BF6C /* GameField.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -245,6 +250,7 @@
 				792B97FF206C78B5003BABCB /* Fruit.m in Sources */,
 				79C05749206B81CA00F71637 /* Snake.m in Sources */,
 				79E7A17A206A33B700866F1A /* ViewController.m in Sources */,
+				79CCB17620735F0700E1BF6C /* GameField.m in Sources */,
 				79E7A185206A33B700866F1A /* main.m in Sources */,
 				79C0574C206B9A9800F71637 /* Coordinate.m in Sources */,
 				79E7A177206A33B700866F1A /* AppDelegate.m in Sources */,

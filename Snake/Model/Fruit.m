@@ -10,10 +10,10 @@
 
 
 @implementation Fruit
--(instancetype) init {
+-(instancetype) initWithGameField: (GameField*) gameField {
     if ([super init]) {
-        NSInteger x = arc4random();
-        NSInteger y = arc4random();
+        NSInteger x = arc4random() % gameField.width;
+        NSInteger y = arc4random() % gameField.height;
         Coordinate* coordinate = [[Coordinate alloc] initWithCoordinateX:x coordinateY:y];
         self.coordinate = coordinate;
     }

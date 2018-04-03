@@ -10,11 +10,13 @@
 #import "Snake.h"
 #import "SnakeGameView.h"
 #import "Fruit.h"
+#import "GameField.h"
 
 @interface ViewController ()
 @property Snake* snake;
 @property Fruit* fruit;
 @property NSTimer* myTimer;
+@property GameField* snakeGameField;
 @end
 
 @implementation ViewController
@@ -36,6 +38,10 @@
     [self addSwipeGestureRecognizerToSnakeGameView];
     self.snakeGameView.hidden = YES;
     
+    self.snakeGameField = [[GameField alloc] initWithWidth:self.snakeGameView.frame.size.width/ 20
+                                                    Height:self.snakeGameView.frame.size.height / 20];
+//    NSLog(@"gameField- width: %d, height: %d", self.snakeGameField.width, self.snakeGameField.height);
+    
 }
 
 -(void) initializeTimer {
@@ -53,8 +59,8 @@
     [self.snake moveOneStep];
     
     // ToDo: delete
-    [self showSnakePosition];
-    [self showFruitPosition];
+//    [self showSnakePosition];
+//    [self showFruitPosition];
 
     [self.snakeGameView setNeedsLayout];
     [self.snakeGameView setNeedsDisplay];
@@ -65,8 +71,27 @@
     
     if([self.snake isHeadHitPoint:self.fruit.coordinate]) {
         [self.snake addBodyLengthNumber:2];
-        self.fruit = [[Fruit alloc] init];
+        self.fruit = [self generateNewFruit];
     }
+}
+
+-(Fruit *) generateNewFruit {
+    Fruit * previousFruit = self.fruit;
+    Fruit * newFruit = [[Fruit alloc] initWithGameField:self.snakeGameField];
+
+    for (int i = 0; i<self.snake.snakeBody.count; i++) {
+        Coordinate* bodyPoint = self.snake.snakeBody[i];
+        if (newFruit.coordinate.x == bodyPoint.x && newFruit.coordinate.y == bodyPoint.y) {
+            [self generateNewFruit];
+        }
+    }
+
+    if (newFruit.coordinate.x == previousFruit.coordinate.x &&
+        newFruit.coordinate.y == previousFruit.coordinate.y) {
+        [self generateNewFruit];
+    }
+    
+    return newFruit;
     
 }
 
@@ -74,11 +99,10 @@
     self.startButton.hidden = YES;
     self.snakeGameView.hidden = NO;
     
-    Coordinate* center = [[Coordinate alloc] initWithCoordinateX:0 coordinateY:0];
-    self.snake = [[Snake alloc] initWithHeadPositionPoint:center];
-    self.fruit = [[Fruit alloc] init];
+    self.snake = [[Snake alloc] initWithGameField:self.snakeGameField];
+    self.fruit = [[Fruit alloc] initWithGameField:self.snakeGameField];
     
-    [self showSnakePosition];
+//    [self showSnakePosition];
 
     [self.view layoutIfNeeded];
     [self.snakeGameView setNeedsLayout];
@@ -157,15 +181,13 @@
 
 -(void) snakeGameViewGetNewDirection: (Direction) newDirection {
     [self.snake changeDirection:newDirection];
-    [self.snake moveOneStep];
-    [self showSnakePosition];
-    [self.snakeGameView setNeedsDisplay];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
 
+/*
 - (void) showSnakePosition {
     for (Coordinate* body in self.snake.snakeBody) {
         NSLog(@"x: %ld, y: %ld", (long)body.x, body.y);
@@ -175,5 +197,6 @@
 - (void) showFruitPosition {
     NSLog(@"Fruit - x: %ld, y: %ld", (long)self.fruit.coordinate.x, self.fruit.coordinate.y);
 }
+*/
 
 @end
