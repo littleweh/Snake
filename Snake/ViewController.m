@@ -55,6 +55,18 @@
                     ];
 }
 
+- (void)willTransitionToTraitCollection:(UITraitCollection *)newCollection withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
+{
+    __weak typeof(self) weakSelf = self;
+
+    [super willTransitionToTraitCollection:newCollection withTransitionCoordinator:coordinator];
+    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+        
+    } completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+        [weakSelf.snakeGameView setNeedsLayout];
+    }];
+}
+
 -(void)playSnakeGame {
     [self.snake moveOneStep];
     
@@ -147,6 +159,9 @@
         [self.snakeGameView.trailingAnchor constraintEqualToAnchor:margins.trailingAnchor constant:10].active = YES;
         [self.snakeGameView.topAnchor constraintEqualToAnchor:margins.topAnchor constant:10].active = YES;
         [self.snakeGameView.bottomAnchor constraintEqualToAnchor:margins.bottomAnchor constant:10].active = YES;
+        
+//        NSLayoutConstraint constraintsWithVisualFormat:@"H:|[viewA]-(padding)-[viewB]-|" options:0 metrics:@{@"padding": @(50)} views:NSDictionaryOfVariableBindings()];
+//        NSLayoutConstraint constraintWithItem:<#(nonnull id)#> attribute:<#(NSLayoutAttribute)#> relatedBy:<#(NSLayoutRelation)#> toItem:<#(nullable id)#> attribute:<#(NSLayoutAttribute)#> multiplier:<#(CGFloat)#> constant:<#(CGFloat)#>
     }
     
     [self.view layoutIfNeeded];
