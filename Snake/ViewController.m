@@ -94,13 +94,14 @@
     for (int i = 0; i<self.snake.snakeBody.count; i++) {
         Coordinate* bodyPoint = self.snake.snakeBody[i];
         if (newFruit.coordinate.x == bodyPoint.x && newFruit.coordinate.y == bodyPoint.y) {
-            [self generateNewFruit];
+            newFruit = [self generateNewFruit];
+            break;
         }
     }
-
+        
     if (newFruit.coordinate.x == previousFruit.coordinate.x &&
         newFruit.coordinate.y == previousFruit.coordinate.y) {
-        [self generateNewFruit];
+        newFruit = [self generateNewFruit];
     }
     
     return newFruit;
