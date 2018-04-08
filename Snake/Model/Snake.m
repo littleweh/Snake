@@ -23,9 +23,13 @@
         addLengthNum = 2;
 
         self.gameField = gameField;
+        NSInteger centerX = gameField.width / 2;
+        NSInteger centerY = gameField.height / 2;
 
         NSMutableArray* body = [[NSMutableArray alloc] init];
-        Coordinate* head = [[Coordinate alloc] initWithCoordinateX:0 coordinateY:0];
+        Coordinate* head = [[Coordinate alloc] initWithCoordinateX:centerX
+                                                       coordinateY:centerY
+                            ];
         [body insertObject:head atIndex:0];
         
         for (int i = 1; i < bodyLength; i++) {

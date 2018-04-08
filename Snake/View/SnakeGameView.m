@@ -16,8 +16,6 @@
 @interface SnakeGameView() {
     int maxY;
     int maxX;
-    int midY;
-    int midX;
 }
 @end
 
@@ -30,8 +28,6 @@
         self.frame = frame;
         self->maxX = frame.size.width / blockSize;
         self->maxY = frame.size.height / blockSize;
-        self->midX = maxX / 2;
-        self->midY = maxY / 2;
     }
     return self;
 }
@@ -74,10 +70,12 @@
     if (point == nil) {
         return CGPointZero;
     }
-    NSInteger newX = (point.x - midX) % maxX;
+    NSInteger newX = point.x % maxX;
     if (newX < 0) newX += maxX;
-    NSInteger newY = (point.y - midY) % maxY;
+
+    NSInteger newY = point.y % maxY;
     if (newY < 0) newY += maxY;
+
     return CGPointMake(newX * blockSize, newY * blockSize);
 }
 

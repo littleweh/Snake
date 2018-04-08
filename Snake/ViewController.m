@@ -37,11 +37,7 @@
     [self.snakeGameView setDelegate:self];
     [self addSwipeGestureRecognizerToSnakeGameView];
     self.snakeGameView.hidden = YES;
-    
-    self.snakeGameField = [[GameField alloc] initWithWidth:self.snakeGameView.frame.size.width/ 20
-                                                    Height:self.snakeGameView.frame.size.height / 20];
-//    NSLog(@"gameField- width: %d, height: %d", self.snakeGameField.width, self.snakeGameField.height);
-    
+
 }
 
 -(void) initializeTimer {
@@ -64,6 +60,7 @@
         
     } completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
         [weakSelf.snakeGameView setNeedsLayout];
+        NSLog(@"gameField- width: %d, height: %d", self.snakeGameField.width, self.snakeGameField.height);
     }];
 }
 
@@ -98,7 +95,7 @@
             break;
         }
     }
-        
+
     if (newFruit.coordinate.x == previousFruit.coordinate.x &&
         newFruit.coordinate.y == previousFruit.coordinate.y) {
         newFruit = [self generateNewFruit];
@@ -109,6 +106,11 @@
 }
 
 -(void) startGame {
+
+    self.snakeGameField = [[GameField alloc] initWithWidth:self.snakeGameView.frame.size.width/ 20
+                                                    Height:self.snakeGameView.frame.size.height / 20];
+    NSLog(@"gameField- width: %ld, height: %ld", (long)self.snakeGameField.width, (long)self.snakeGameField.height);
+
     self.startButton.hidden = YES;
     self.snakeGameView.hidden = NO;
     
