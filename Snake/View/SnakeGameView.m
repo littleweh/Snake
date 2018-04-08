@@ -75,6 +75,9 @@
         return CGPointZero;
     }
 
+    maxX = self.frame.size.width / blockSize;
+    maxY = self.frame.size.height / blockSize;
+
     NSInteger newX = point.x % maxX;
     if (newX < 0) newX += maxX;
 
@@ -83,12 +86,12 @@
     return CGPointMake(newX * blockSize, newY * blockSize);
 }
 
--(void) drawSnake: (NSMutableArray*) snake {
-    if (snake == nil) {
+-(void) drawSnake: (NSMutableArray*) snakeBody {
+    if (snakeBody == nil) {
         return;
     }
-    for (int i = 0; i < [snake count]; i++) {
-        CGPoint newPoint = [self modelPointToViewPoint:snake[i]];
+    for (int i = 0; i < [snakeBody count]; i++) {
+        CGPoint newPoint = [self modelPointToViewPoint:snakeBody[i]];
         CGRect rect = CGRectMake(newPoint.x, newPoint.y, blockSize, blockSize);
         CGContextRef context = UIGraphicsGetCurrentContext();
         CGContextSetRGBFillColor(context, 1.0, 0.0, 0.0, 1.0);

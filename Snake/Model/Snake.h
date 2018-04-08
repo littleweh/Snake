@@ -27,7 +27,6 @@ typedef enum NSUInteger {
 -(void) addBodyLengthNumber: (NSUInteger) number;
 -(BOOL) isHeadHitBody;
 -(BOOL) isHeadHitPoint: (Coordinate*) point;
--(void) changeDirection: (Direction) direction;
 @end
 
 

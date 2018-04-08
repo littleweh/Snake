@@ -111,18 +111,6 @@
     return [snakeHead isEqual:point];    
 }
 
--(void) changeDirection: (Direction) direction {
-    if (direction == left || direction == right) {
-        if (self.direction == up || self.direction == down) {
-            [self setDirection:direction];
-        }
-    } else if (direction == up || direction == down) {
-        if (self.direction == left || self.direction == right) {
-            [self setDirection:direction];
-        }
-    }
-}
-
 -(void) snakeBodyEnqueueWithPoint: (Coordinate*) point {
     [self.snakeBody insertObject:point atIndex:self.snakeBody.count];
 }
