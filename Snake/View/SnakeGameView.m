@@ -75,7 +75,6 @@
 
     NSInteger newY = point.y % maxY;
     if (newY < 0) newY += maxY;
-
     return CGPointMake(newX * blockSize, newY * blockSize);
 }
 

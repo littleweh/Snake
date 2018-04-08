@@ -23,6 +23,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+
+    self.view.backgroundColor = [UIColor yellowColor];
     
     CGRect gameView = CGRectMake(self.view.bounds.origin.x, self.view.bounds.origin.y, self.view.bounds.size.width, self.view.bounds.size.height);
     self.snakeGameView = [[SnakeGameView alloc] initWithFrame:gameView];
@@ -116,7 +118,8 @@
     
     self.snake = [[Snake alloc] initWithGameField:self.snakeGameField];
     self.fruit = [[Fruit alloc] initWithGameField:self.snakeGameField];
-    
+    // ToDo: delete the test code in Fruit init func
+
 //    [self showSnakePosition];
 
     [self.view layoutIfNeeded];
@@ -140,11 +143,55 @@
     [self.startButton setTitle:@"Start" forState:UIControlStateNormal];
     [self.startButton addTarget:self action:@selector(startGame) forControlEvents:UIControlEventTouchUpInside];
     self.startButton.translatesAutoresizingMaskIntoConstraints = NO;
+
+    NSLayoutConstraint *centerX = [NSLayoutConstraint
+                                   constraintWithItem:self.startButton
+                                   attribute:NSLayoutAttributeCenterX
+                                   relatedBy:NSLayoutRelationEqual
+                                   toItem:self.view
+                                   attribute:NSLayoutAttributeCenterX
+                                   multiplier:1.0
+                                   constant:0.0
+                                   ];
+    NSLayoutConstraint *centerY = [NSLayoutConstraint
+                                   constraintWithItem:self.startButton
+                                   attribute:NSLayoutAttributeCenterY
+                                   relatedBy:NSLayoutRelationEqual
+                                   toItem:self.view
+                                   attribute:NSLayoutAttributeCenterY
+                                   multiplier:1.0
+                                   constant:0.0
+                                   ];
     
-    [self.startButton.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor].active = YES;
-    [self.startButton.centerYAnchor constraintEqualToAnchor:self.view.centerYAnchor].active = YES;
-    [self.startButton.widthAnchor constraintEqualToAnchor:self.view.widthAnchor multiplier:0.3].active = YES;
-    [self.startButton.heightAnchor constraintLessThanOrEqualToAnchor:self.startButton.widthAnchor multiplier:1.6].active = YES;
+    NSLayoutConstraint *width = [NSLayoutConstraint
+                                 constraintWithItem:self.startButton
+                                 attribute:NSLayoutAttributeWidth
+                                 relatedBy:NSLayoutRelationGreaterThanOrEqual
+                                 toItem:self.view
+                                 attribute:NSLayoutAttributeWidth
+                                 multiplier:0.3
+                                 constant:0.0
+                                 ];
+
+    NSLayoutConstraint *height = [NSLayoutConstraint
+                                  constraintWithItem:self.startButton
+                                  attribute:NSLayoutAttributeHeight
+                                  relatedBy:NSLayoutRelationLessThanOrEqual
+                                  toItem:self.startButton
+                                  attribute:NSLayoutAttributeWidth
+                                  multiplier:1.6
+                                  constant:0.0
+                                  ];
+
+    [self.view addConstraint:centerX];
+    [self.view addConstraint:centerY];
+    [self.view addConstraint:width];
+    [self.startButton addConstraint:height];
+
+    [self.startButton layoutIfNeeded];
+
+    self.startButton.layer.cornerRadius = 0.2 * self.startButton.frame.size.height;
+    self.startButton.clipsToBounds = YES;
 }
 
 -(void) setupSnakeGameView {
@@ -152,19 +199,95 @@
     self.snakeGameView.translatesAutoresizingMaskIntoConstraints = NO;
     if (@available (iOS 11, *)) {
         UILayoutGuide * guide = self.view.safeAreaLayoutGuide;
-        [self.snakeGameView.leadingAnchor constraintEqualToAnchor:guide.leadingAnchor constant:10].active = YES;
-        [self.snakeGameView.trailingAnchor constraintEqualToAnchor:guide.trailingAnchor constant:10].active = YES;
-        [self.snakeGameView.topAnchor constraintEqualToAnchor:guide.topAnchor].active = YES;
-        [self.snakeGameView.bottomAnchor constraintEqualToAnchor:guide.bottomAnchor].active = YES;
+
+        NSLayoutConstraint *leading = [NSLayoutConstraint
+                                       constraintWithItem:self.snakeGameView
+                                     attribute:NSLayoutAttributeLeading
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:guide
+                                     attribute:NSLayoutAttributeLeading
+                                    multiplier:1.0
+                                      constant:10.0
+         ];
+
+        NSLayoutConstraint *trailing = [NSLayoutConstraint
+                                        constraintWithItem:self.snakeGameView
+                                     attribute:NSLayoutAttributeTrailing
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:guide
+                                     attribute:NSLayoutAttributeTrailing
+                                    multiplier:1.0
+                                      constant:-10.0
+         ];
+        NSLayoutConstraint *top = [NSLayoutConstraint
+                                   constraintWithItem:self.snakeGameView
+                                     attribute:NSLayoutAttributeTop
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:guide
+                                     attribute:NSLayoutAttributeTop
+                                    multiplier:1.0
+                                      constant:10
+         ];
+        NSLayoutConstraint *bottom = [NSLayoutConstraint
+                                      constraintWithItem:self.snakeGameView
+                                     attribute:NSLayoutAttributeBottom
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:guide
+                                     attribute:NSLayoutAttributeBottom
+                                    multiplier:1.0
+                                      constant:-10
+         ];
+
+        [self.view addConstraint:leading];
+        [self.view addConstraint:trailing];
+        [self.view addConstraint:top];
+        [self.view addConstraint:bottom];
     } else {
         UILayoutGuide * margins = self.view.layoutMarginsGuide;
-        [self.snakeGameView.leadingAnchor constraintEqualToAnchor:margins.leadingAnchor constant:10].active = YES;
-        [self.snakeGameView.trailingAnchor constraintEqualToAnchor:margins.trailingAnchor constant:10].active = YES;
-        [self.snakeGameView.topAnchor constraintEqualToAnchor:margins.topAnchor constant:10].active = YES;
-        [self.snakeGameView.bottomAnchor constraintEqualToAnchor:margins.bottomAnchor constant:10].active = YES;
+        NSLayoutConstraint *top = [NSLayoutConstraint
+                                   constraintWithItem:self.snakeGameView
+                                     attribute:NSLayoutAttributeTop
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:margins
+                                     attribute:NSLayoutAttributeTop
+                                    multiplier:1.0
+                                      constant:10
+         ];
+        NSLayoutConstraint *bottom = [NSLayoutConstraint
+                                      constraintWithItem:self.snakeGameView
+                                     attribute:NSLayoutAttributeBottom
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:margins
+                                     attribute:NSLayoutAttributeBottom
+                                    multiplier:1.0
+                                      constant:-10
+         ];
+
+        NSLayoutConstraint *leading = [NSLayoutConstraint
+                                       constraintWithItem:self.snakeGameView
+                                     attribute:NSLayoutAttributeLeading
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:margins
+                                     attribute:NSLayoutAttributeLeading
+                                    multiplier:1.0
+                                      constant:10
+         ];
+        NSLayoutConstraint *trailing = [NSLayoutConstraint
+                                        constraintWithItem:self.snakeGameView
+                                     attribute:NSLayoutAttributeTrailing
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:margins
+                                     attribute:NSLayoutAttributeTrailing
+                                    multiplier:1.0
+                                      constant:-10
+         ];
+
+        [self.view addConstraint:top];
+        [self.view addConstraint:bottom];
+        [self.view addConstraint:leading];
+        [self.view addConstraint:trailing];
         
 //        NSLayoutConstraint constraintsWithVisualFormat:@"H:|[viewA]-(padding)-[viewB]-|" options:0 metrics:@{@"padding": @(50)} views:NSDictionaryOfVariableBindings()];
-//        NSLayoutConstraint constraintWithItem:<#(nonnull id)#> attribute:<#(NSLayoutAttribute)#> relatedBy:<#(NSLayoutRelation)#> toItem:<#(nullable id)#> attribute:<#(NSLayoutAttribute)#> multiplier:<#(CGFloat)#> constant:<#(CGFloat)#>
     }
     
     [self.view layoutIfNeeded];
