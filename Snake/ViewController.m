@@ -61,14 +61,17 @@
     [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
         
     } completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+        // For test
         [weakSelf.snakeGameView setNeedsLayout];
+
         NSLog(@"gameField- width: %d, height: %d", self.snakeGameField.width, self.snakeGameField.height);
     }];
 }
 
 -(void)playSnakeGame {
     [self.snake moveOneStep];
-    
+//    [self showSnakeDirection];
+
     // ToDo: delete
 //    [self showSnakePosition];
 //    [self showFruitPosition];
@@ -203,7 +206,7 @@
         NSLayoutConstraint *leading = [NSLayoutConstraint
                                        constraintWithItem:self.snakeGameView
                                      attribute:NSLayoutAttributeLeading
-                                     relatedBy:NSLayoutRelationEqual
+                                     relatedBy:NSLayoutRelationGreaterThanOrEqual
                                         toItem:guide
                                      attribute:NSLayoutAttributeLeading
                                     multiplier:1.0
@@ -213,7 +216,7 @@
         NSLayoutConstraint *trailing = [NSLayoutConstraint
                                         constraintWithItem:self.snakeGameView
                                      attribute:NSLayoutAttributeTrailing
-                                     relatedBy:NSLayoutRelationEqual
+                                     relatedBy:NSLayoutRelationGreaterThanOrEqual
                                         toItem:guide
                                      attribute:NSLayoutAttributeTrailing
                                     multiplier:1.0
@@ -231,17 +234,27 @@
         NSLayoutConstraint *bottom = [NSLayoutConstraint
                                       constraintWithItem:self.snakeGameView
                                      attribute:NSLayoutAttributeBottom
-                                     relatedBy:NSLayoutRelationEqual
+                                     relatedBy:NSLayoutRelationGreaterThanOrEqual
                                         toItem:guide
                                      attribute:NSLayoutAttributeBottom
                                     multiplier:1.0
                                       constant:-10
          ];
+        NSLayoutConstraint *centerX = [NSLayoutConstraint
+                                       constraintWithItem:self.snakeGameView
+                                       attribute:NSLayoutAttributeCenterX
+                                       relatedBy:NSLayoutRelationEqual
+                                       toItem:guide
+                                       attribute:NSLayoutAttributeCenterX
+                                       multiplier:1.0
+                                       constant:0.0
+                                       ];
 
         [self.view addConstraint:leading];
         [self.view addConstraint:trailing];
         [self.view addConstraint:top];
         [self.view addConstraint:bottom];
+        [self.view addConstraint:centerX];
     } else {
         UILayoutGuide * margins = self.view.layoutMarginsGuide;
         NSLayoutConstraint *top = [NSLayoutConstraint
@@ -256,7 +269,7 @@
         NSLayoutConstraint *bottom = [NSLayoutConstraint
                                       constraintWithItem:self.snakeGameView
                                      attribute:NSLayoutAttributeBottom
-                                     relatedBy:NSLayoutRelationEqual
+                                     relatedBy:NSLayoutRelationGreaterThanOrEqual
                                         toItem:margins
                                      attribute:NSLayoutAttributeBottom
                                     multiplier:1.0
@@ -266,7 +279,7 @@
         NSLayoutConstraint *leading = [NSLayoutConstraint
                                        constraintWithItem:self.snakeGameView
                                      attribute:NSLayoutAttributeLeading
-                                     relatedBy:NSLayoutRelationEqual
+                                     relatedBy:NSLayoutRelationGreaterThanOrEqual
                                         toItem:margins
                                      attribute:NSLayoutAttributeLeading
                                     multiplier:1.0
@@ -275,17 +288,28 @@
         NSLayoutConstraint *trailing = [NSLayoutConstraint
                                         constraintWithItem:self.snakeGameView
                                      attribute:NSLayoutAttributeTrailing
-                                     relatedBy:NSLayoutRelationEqual
+                                     relatedBy:NSLayoutRelationGreaterThanOrEqual
                                         toItem:margins
                                      attribute:NSLayoutAttributeTrailing
                                     multiplier:1.0
                                       constant:-10
          ];
 
+        NSLayoutConstraint *centerX = [NSLayoutConstraint
+                                       constraintWithItem:self.snakeGameView
+                                       attribute:NSLayoutAttributeCenterX
+                                       relatedBy:NSLayoutRelationEqual
+                                       toItem:margins
+                                       attribute:NSLayoutAttributeCenterX
+                                       multiplier:1.0
+                                       constant:0.0
+                                       ];
+
         [self.view addConstraint:top];
         [self.view addConstraint:bottom];
         [self.view addConstraint:leading];
         [self.view addConstraint:trailing];
+        [self.view addConstraint:centerX];
         
 //        NSLayoutConstraint constraintsWithVisualFormat:@"H:|[viewA]-(padding)-[viewB]-|" options:0 metrics:@{@"padding": @(50)} views:NSDictionaryOfVariableBindings()];
     }
@@ -313,7 +337,37 @@
 }
 
 -(Snake*) snakeForSnakeGameView: (SnakeGameView*) snakeView {
-    return self.snake;
+    if (UIDeviceOrientationIsPortrait([UIDevice currentDevice].orientation)) {
+        NSLog(@"potrait mode- self.snake");
+        [self showSnakePosition:self.snake];
+        [self showSnakeDirection:self.snake];
+        return self.snake;
+    } else {
+        Snake *newSnake = [self.snake copy];
+        newSnake.direction = [self temporaryChangeDirection:self.snake];
+        NSMutableArray *newBody = [[NSMutableArray alloc] init];
+        for (int i = 0; i < newSnake.snakeBody.count; i++) {
+            Coordinate *point = newSnake.snakeBody[i];
+            NSInteger newX = (self.snake.gameField.height - point.y) % self.snake.gameField.height;
+            NSInteger newY = point.x % self.snakeGameField.width;
+            Coordinate *newPoint = [[Coordinate alloc] initWithCoordinateX:newX
+                                                               coordinateY:newY
+                                    ];
+            [newBody insertObject:newPoint atIndex:i];
+        }
+        newSnake.snakeBody = newBody;
+
+        NSLog(@"-- landscape Mode--");
+        NSLog(@"----newSnake body position----");
+        [self showSnakePosition:newSnake];
+        [self showSnakeDirection:newSnake];
+        NSLog(@"----self.snake body position----");
+        [self showSnakePosition:self.snake];
+        [self showSnakeDirection:self.snake];
+
+        return newSnake;
+    }
+
 }
 
 -(Fruit*) fruitForSnakeGameView: (SnakeGameView*) snakeView {
@@ -328,16 +382,50 @@
     [super didReceiveMemoryWarning];
 }
 
-/*
-- (void) showSnakePosition {
-    for (Coordinate* body in self.snake.snakeBody) {
+// For test
+-(Direction) temporaryChangeDirection:(Snake*) snake {
+    switch (snake.direction) {
+        case up:
+            return right;
+            break;
+        case down:
+            return left;
+            break;
+        case right:
+            return down;
+            break;
+        case left:
+            return up;
+            break;
+    }
+}
+
+- (void) showSnakePosition: (Snake*) snake {
+    for (Coordinate* body in snake.snakeBody) {
         NSLog(@"x: %ld, y: %ld", (long)body.x, body.y);
     }
 }
 
-- (void) showFruitPosition {
-    NSLog(@"Fruit - x: %ld, y: %ld", (long)self.fruit.coordinate.x, self.fruit.coordinate.y);
+-(void) showSnakeDirection: (Snake*) snake {
+    switch (snake.direction) {
+        case up:
+            NSLog(@"snake direction: UP");
+            break;
+        case down:
+            NSLog(@"snake direction: DOWN");
+            break;
+        case left:
+            NSLog(@"snake direction: LEFT");
+            break;
+        case right:
+            NSLog(@"snake direction: RIGHT");
+            break;
+    }
 }
-*/
+
+- (void) showFruitPosition: (Fruit*) fruit {
+    NSLog(@"Fruit - x: %ld, y: %ld", (long)fruit.coordinate.x, fruit.coordinate.y);
+}
+
 
 @end

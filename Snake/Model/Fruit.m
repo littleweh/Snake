@@ -26,4 +26,12 @@
     }
     return self;
 }
+
+-(instancetype) initWithCoordinate: (Coordinate*) coordinate {
+    if ([super init]) {
+        self.coordinate = coordinate;
+    }
+    return self;
+}
+
 @end

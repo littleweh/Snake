@@ -8,13 +8,24 @@
 
 #import "Snake.h"
 
-@interface Snake(){
+@interface Snake()
+{
     NSUInteger bodyLength;
     NSUInteger addLengthNum;
 }
 @end
 
 @implementation Snake
+
+-(id) copyWithZone:(NSZone *)zone {
+    Snake *snakeCopy = [[Snake allocWithZone:zone] init];
+    if (snakeCopy) {
+        [snakeCopy setDirection:self.direction];
+        [snakeCopy setGameField:self.gameField];
+        [snakeCopy setSnakeBody:self.snakeBody];
+    }
+    return snakeCopy;
+}
 
 -(instancetype) initWithGameField: (GameField*) gameField {
     if ([super init]) {
@@ -33,8 +44,10 @@
         [body insertObject:head atIndex:0];
         
         for (int i = 1; i < bodyLength; i++) {
-            Coordinate *bodyPoint = [[Coordinate alloc] initWithCoordinateX: (head.x+i) % gameField.width
-                                                                coordinateY:head.y];
+            Coordinate *bodyPoint = [[Coordinate alloc]
+                                     initWithCoordinateX: (head.x+i) % gameField.width
+                                     coordinateY:head.y
+                                     ];
             [body insertObject:bodyPoint atIndex:0];
         }
         

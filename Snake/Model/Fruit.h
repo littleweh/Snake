@@ -13,4 +13,5 @@
 @interface Fruit : NSObject
 @property (strong, atomic, readwrite) Coordinate* coordinate;
 -(instancetype) initWithGameField: (GameField*) gameField;
+-(instancetype) initWithCoordinate: (Coordinate*) coordinate;
 @end
