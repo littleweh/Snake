@@ -13,22 +13,12 @@
     NSUInteger bodyLength;
     NSUInteger addLengthNum;
 }
-//@property (strong, atomic, readwrite) NSMutableArray <Coordinate *> * snakeBody;
-//@property (assign, atomic, readwrite) Direction direction;
-//@property (strong, atomic, readwrite) GameField* gameField;
+@property (strong, atomic, readwrite) NSMutableArray <Coordinate *> * snakeBody;
+@property (assign, atomic, readwrite) Direction direction;
+@property (strong, atomic, readwrite) GameField* gameField;
 @end
 
 @implementation Snake
-
--(id) copyWithZone:(NSZone *)zone {
-    Snake *snakeCopy = [[Snake allocWithZone:zone] init];
-    if (snakeCopy) {
-        [snakeCopy setDirection:self.direction];
-        [snakeCopy setGameField:self.gameField];
-        [snakeCopy setSnakeBody:self.snakeBody];
-    }
-    return snakeCopy;
-}
 
 -(instancetype) initWithGameField: (GameField*) gameField {
     if ([super init]) {

@@ -311,104 +311,15 @@
 
 // MARK: snakeGameViewDelegate
 -(Snake*) snakeForSnakeGameView: (SnakeGameView*) snakeView {
-
-    Snake *newSnake = [self.snake copy];
-    newSnake.direction = [self directionForDeviceOrientationOriginalDirection:newSnake.direction];
-    NSMutableArray *newBody = [[NSMutableArray alloc] init];
-    for (int i = 0; i < newSnake.snakeBody.count; i++) {
-        Coordinate *newPoint = [self coordinateForDeviceOrientationWithOriginalCooridnate:newSnake.snakeBody[i]];
-        [newBody insertObject:newPoint atIndex:i];
-    }
-    newSnake.snakeBody = newBody;
-    return newSnake;
+    return self.snake;
 }
 
 -(Fruit*) fruitForSnakeGameView: (SnakeGameView*) snakeView {
-    Coordinate *newFruitPoint = [self coordinateForDeviceOrientationWithOriginalCooridnate:self.fruit.coordinate];
-    Fruit *newFruit = [[Fruit alloc] initWithCoordinate:newFruitPoint];
-    return newFruit;
+    return self.fruit;
 }
 
 -(void) snakeGameViewGetNewDirection: (Direction) newDirection {
-    Direction originalDirection = [self directionForDeviceOrientationOriginalDirection:self.snake.direction];
-    
-    if (originalDirection == self.snake.direction) {
-        [self.snake changeDirection:newDirection];
-    } else {
-        switch (newDirection) {
-            case up:
-                if (originalDirection == left || originalDirection == right) {
-                    [self.snake setDirection:right];
-                }
-                break;
-            case down:
-                if (originalDirection == left || originalDirection == right) {
-                    [self.snake setDirection:left];
-                    
-                }
-                break;
-            case left:
-                if (originalDirection == up || originalDirection == down) {
-                    [self.snake setDirection:up];
-                }
-                break;
-            case right:
-                if (originalDirection == up || originalDirection == down) {
-                    [self.snake setDirection:down];
-                }
-                break;
-        }
-    }
-}
-
-// MARK: Device Orientation
-
-// ToDo: check UIDeviceOrientationPortraitUpsideDown frame, and status bar
-
-- (void)willTransitionToTraitCollection:(UITraitCollection *)newCollection withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
-{
-    __weak typeof(self) weakSelf = self;
-    
-    [super willTransitionToTraitCollection:newCollection withTransitionCoordinator:coordinator];
-    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
-        
-    } completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
-        [weakSelf.snakeGameView setNeedsLayout];
-        [weakSelf.snakeGameView setNeedsDisplay];
-        
-    }];
-}
-
--(Coordinate*) coordinateForDeviceOrientationWithOriginalCooridnate: (Coordinate*) point {
-    Coordinate* newPoint = [point copy];
-    if (UIDeviceOrientationIsLandscape([UIDevice currentDevice].orientation)) {
-        newPoint.x = point.y;
-        newPoint.y = self.snakeGameField.width - point.x;
-        return newPoint;
-    }
-    return newPoint;
-}
-
--(Direction) directionForDeviceOrientationOriginalDirection: (Direction) direction {
-    Direction newDirection = direction;
-    if (UIDeviceOrientationIsLandscape([UIDevice currentDevice].orientation)) {
-        switch (direction) {
-            case up:
-                newDirection = left;
-                break;
-            case down:
-                newDirection = right;
-                break;
-            case left:
-                newDirection = down;
-                break;
-            case right:
-                newDirection = up;
-                break;
-        }
-        return newDirection;
-    }
-    return newDirection;
+    [self.snake changeDirection:newDirection];
 }
 
 - (void)didReceiveMemoryWarning {
