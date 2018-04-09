@@ -7,33 +7,79 @@
 //
 
 #import <XCTest/XCTest.h>
+#import "Snake.h"
 
 @interface SnakeTests : XCTestCase
 
 @end
 
+//@interface Snake ()
+//@property (strong, atomic, readwrite) NSMutableArray* snakeBody;
+//@end
+
 @implementation SnakeTests
 
 - (void)setUp {
     [super setUp];
-    // Put setup code here. This method is called before the invocation of each test method in the class.
 }
 
 - (void)tearDown {
-    // Put teardown code here. This method is called after the invocation of each test method in the class.
     [super tearDown];
 }
 
-- (void)testExample {
-    // This is an example of a functional test case.
-    // Use XCTAssert and related functions to verify your tests produce the correct results.
+- (void)testAddTailOnLeftEdge {
+    GameField *gameField = [[GameField alloc] initWithWidth:4 Height:4];
+    Snake *snake = [[Snake alloc] initWithGameField:gameField];
+    [snake changeDirection:up];
+    NSMutableArray *body = [NSMutableArray array];
+    [body addObject:[[Coordinate alloc] initWithCoordinateX:0 coordinateY:2]];
+    [body addObject:[[Coordinate alloc] initWithCoordinateX:3 coordinateY:2]];
+    [body addObject:[[Coordinate alloc] initWithCoordinateX:3 coordinateY:1]];
+    snake.snakeBody = body;
+    // arrange
+
+    [snake addBodyLengthNumber:1];
+    // action
+
+    Coordinate *tail = snake.snakeBody.firstObject;
+    XCTAssert(tail.x == 1 && tail.y == 2, @"tail x %d, y %d", tail.x, tail.y);
 }
 
-- (void)testPerformanceExample {
-    // This is an example of a performance test case.
-    [self measureBlock:^{
-        // Put the code you want to measure the time of here.
-    }];
+- (void)testAddTailORightnEdge {
+    GameField *gameField = [[GameField alloc] initWithWidth:4 Height:4];
+    Snake *snake = [[Snake alloc] initWithGameField:gameField];
+    [snake changeDirection:up];
+    NSMutableArray *body = [NSMutableArray array];
+    [body addObject:[[Coordinate alloc] initWithCoordinateX:3 coordinateY:1]];
+    [body addObject:[[Coordinate alloc] initWithCoordinateX:0 coordinateY:1]];
+    [body addObject:[[Coordinate alloc] initWithCoordinateX:0 coordinateY:0]];
+
+    snake.snakeBody = body;
+    // arrange
+
+    [snake addBodyLengthNumber:1];
+    // action
+
+    Coordinate *tail = snake.snakeBody.firstObject;
+    XCTAssert(tail.x == 2 && tail.y == 1, @"tail x %d, y %d", tail.x, tail.y);
 }
+
+- (void)testAddTailCenter {
+    GameField *gameField = [[GameField alloc] initWithWidth:4 Height:4];
+    Snake *snake = [[Snake alloc] initWithGameField:gameField];
+    [snake changeDirection:up];
+    NSMutableArray *body = [NSMutableArray array];
+    [body addObject:[[Coordinate alloc] initWithCoordinateX:2 coordinateY:1]];
+    [body addObject:[[Coordinate alloc] initWithCoordinateX:1 coordinateY:1]];
+    snake.snakeBody = body;
+    // arrange
+
+    [snake addBodyLengthNumber:1];
+    // action
+
+    Coordinate *tail = snake.snakeBody.firstObject;
+    XCTAssert(tail.x == 3 && tail.y == 1, @"tail x %d, y %d", tail.x, tail.y);
+}
+
 
 @end

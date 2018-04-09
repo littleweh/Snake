@@ -13,6 +13,9 @@
     NSUInteger bodyLength;
     NSUInteger addLengthNum;
 }
+//@property (strong, atomic, readwrite) NSMutableArray <Coordinate *> * snakeBody;
+//@property (assign, atomic, readwrite) Direction direction;
+//@property (strong, atomic, readwrite) GameField* gameField;
 @end
 
 @implementation Snake
@@ -32,6 +35,9 @@
         self.direction = left;
         bodyLength = 2;
         addLengthNum = 2;
+
+        NSAssert(gameField.width >= 4 , @"must be larger than 4");
+        NSAssert(gameField.height >= 4 , @"must be larger than 4");
 
         self.gameField = gameField;
         NSInteger centerX = gameField.width / 2;

@@ -18,7 +18,10 @@ typedef enum NSUInteger {
 } Direction;
 
 @interface Snake : NSObject <NSCopying>
-@property (strong, atomic, readwrite) NSMutableArray* snakeBody;
+//@property (strong, atomic, readonly) NSMutableArray <Coordinate *> * snakeBody;
+//@property (assign, atomic, readonly) Direction direction;
+//@property (strong, atomic, readonly) GameField* gameField;
+@property (strong, atomic, readwrite) NSMutableArray <Coordinate *> * snakeBody;
 @property (assign, atomic, readwrite) Direction direction;
 @property (strong, atomic, readwrite) GameField* gameField;
 
