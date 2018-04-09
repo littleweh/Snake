@@ -24,11 +24,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    self.view.backgroundColor = [UIColor yellowColor];
+    self.view.backgroundColor = [UIColor whiteColor];
     
-    CGRect gameView = CGRectMake(self.view.bounds.origin.x, self.view.bounds.origin.y, self.view.bounds.size.width, self.view.bounds.size.height);
-    self.snakeGameView = [[SnakeGameView alloc] initWithFrame:gameView];
-    
+    self.snakeGameView = [[SnakeGameView alloc] initWithFrame:self.view.bounds];
     self.startButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     
     [self.view addSubview:self.snakeGameView];
@@ -54,10 +52,9 @@
 }
 
 -(void) startGame {
-    
     self.snakeGameField = [[GameField alloc] initWithWidth:self.snakeGameView.frame.size.width/ 20
                                                     Height:self.snakeGameView.frame.size.height / 20];
-    
+    // ToDo: delete
     NSLog(@"gameField- width: %ld, height: %ld", (long)self.snakeGameField.width, (long)self.snakeGameField.height);
     
     self.startButton.hidden = YES;
@@ -316,7 +313,6 @@
 }
 
 // MARK: snakeGameViewDelegate
-
 -(Snake*) snakeForSnakeGameView: (SnakeGameView*) snakeView {
 
     Snake *newSnake = [self.snake copy];
@@ -357,40 +353,27 @@
     // ToDo: delete
     
     if (originalDirection == self.snake.direction) {
-        switch (newDirection) {
-            case up:
-            case down:
-                if (originalDirection == left || right) {
-                    [self.snake setDirection:newDirection];
-                }
-                break;
-            case left:
-            case right:
-                if (originalDirection == up || down) {
-                    [self.snake setDirection:newDirection];
-                }
-                break;
-        }
+        [self.snake changeDirection:newDirection];
     } else {
         switch (newDirection) {
             case up:
-                if (originalDirection == left || right) {
+                if (originalDirection == left || originalDirection == right) {
                     [self.snake setDirection:right];
                 }
                 break;
             case down:
-                if (originalDirection == left || right) {
+                if (originalDirection == left || originalDirection == right) {
                     [self.snake setDirection:left];
                     
                 }
                 break;
             case left:
-                if (originalDirection == up || down) {
+                if (originalDirection == up || originalDirection == down) {
                     [self.snake setDirection:up];
                 }
                 break;
             case right:
-                if (originalDirection == up || down) {
+                if (originalDirection == up || originalDirection == down) {
                     [self.snake setDirection:down];
                 }
                 break;

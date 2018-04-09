@@ -83,6 +83,18 @@
     [self snakeBodyDequeue];
 }
 
+-(void) changeDirection: (Direction) direction {
+    if (direction == left || direction == right) {
+        if (self.direction == up || self.direction == down) {
+            [self setDirection:direction];
+        }
+    } else if (direction == up || direction == down) {
+        if (self.direction == left || self.direction == right) {
+            [self setDirection:direction];
+        }
+    }
+}
+
 -(void) addBodyLengthNumber: (NSUInteger) number {
     NSRange range = NSMakeRange(0, 2);
     NSArray* lastTwoNodes = [[self.snakeBody subarrayWithRange:range] mutableCopy];

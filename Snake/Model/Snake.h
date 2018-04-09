@@ -24,6 +24,7 @@ typedef enum NSUInteger {
 
 -(instancetype) initWithGameField: (GameField*) gameField;
 -(void) moveOneStep;
+-(void) changeDirection: (Direction) direction;
 -(void) addBodyLengthNumber: (NSUInteger) number;
 -(BOOL) isHeadHitBody;
 -(BOOL) isHeadHitPoint: (Coordinate*) point;

@@ -26,12 +26,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Snake/ViewController.m"
-            timestampString = "544923294.720713"
+            timestampString = "544930375.4928631"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "374"
-            endingLineNumber = "374"
-            landmarkName = "-directionForDeviceOrientationOriginalDirection:"
+            startingLineNumber = "361"
+            endingLineNumber = "361"
+            landmarkName = "-snakeGameViewGetNewDirection:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

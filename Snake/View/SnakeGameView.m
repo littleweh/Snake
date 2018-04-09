@@ -12,6 +12,7 @@
 #import "Fruit.h"
 
 #define blockSize 20.0
+// ToDo: blockSize flexible
 
 @interface SnakeGameView() {
     int maxY;
@@ -20,9 +21,6 @@
 @end
 
 @implementation SnakeGameView
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-
 -(instancetype) initWithFrame: (CGRect) frame {
     if ([super initWithFrame:frame]) {
         self.frame = frame;
