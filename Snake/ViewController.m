@@ -326,7 +326,6 @@
 -(Fruit*) fruitForSnakeGameView: (SnakeGameView*) snakeView {
     Coordinate *newFruitPoint = [self coordinateForDeviceOrientationWithOriginalCooridnate:self.fruit.coordinate];
     Fruit *newFruit = [[Fruit alloc] initWithCoordinate:newFruitPoint];
-    [self showFruitPosition:newFruit];
     return newFruit;
 }
 
@@ -363,6 +362,8 @@
 }
 
 // MARK: Device Orientation
+
+// ToDo: check UIDeviceOrientationPortraitUpsideDown frame, and status bar
 
 - (void)willTransitionToTraitCollection:(UITraitCollection *)newCollection withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
@@ -408,35 +409,6 @@
         return newDirection;
     }
     return newDirection;
-}
-
-
-// MARK: to be deleted
-- (void) showSnakePosition: (Snake*) snake {
-    for (Coordinate* body in snake.snakeBody) {
-        NSLog(@"x: %ld, y: %ld", (long)body.x, body.y);
-    }
-}
-
--(void) showDirection: (Direction) direction {
-    switch (direction) {
-        case up:
-            NSLog(@"snake direction: UP");
-            break;
-        case down:
-            NSLog(@"snake direction: DOWN");
-            break;
-        case left:
-            NSLog(@"snake direction: LEFT");
-            break;
-        case right:
-            NSLog(@"snake direction: RIGHT");
-            break;
-    }
-}
-
-- (void) showFruitPosition: (Fruit*) fruit {
-    NSLog(@"Fruit - x: %ld, y: %ld", (long)fruit.coordinate.x, fruit.coordinate.y);
 }
 
 - (void)didReceiveMemoryWarning {
