@@ -36,19 +36,15 @@
         switch (direction) {
             case UISwipeGestureRecognizerDirectionUp:
                 [self.delegate snakeGameViewGetNewDirection:up];
-                NSLog(@"direction: up");
                 break;
             case UISwipeGestureRecognizerDirectionDown:
                 [self.delegate snakeGameViewGetNewDirection:down];
-                NSLog(@"direction: down");
                 break;
             case UISwipeGestureRecognizerDirectionLeft:
                 [self.delegate snakeGameViewGetNewDirection:left];
-                NSLog(@"direction: left");
                 break;
             case UISwipeGestureRecognizerDirectionRight:
                 [self.delegate snakeGameViewGetNewDirection:right];
-                NSLog(@"direction: right");
                 break;
         }
     }

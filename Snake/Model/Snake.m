@@ -75,9 +75,6 @@
             newHead.y = (oldHead.y+1) % self.gameField.height;
             if (newHead.y < 0) newHead.y += self.gameField.height;
             break;
-        default:
-            NSLog(@"no direction set");
-            break;
     }
     [self snakeBodyEnqueueWithPoint:newHead];
     [self snakeBodyDequeue];
