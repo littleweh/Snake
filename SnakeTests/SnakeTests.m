@@ -13,9 +13,9 @@
 
 @end
 
-//@interface Snake ()
-//@property (strong, atomic, readwrite) NSMutableArray* snakeBody;
-//@end
+@interface Snake ()
+@property (strong, atomic, readwrite) NSMutableArray* snakeBody;
+@end
 
 @implementation SnakeTests
 
@@ -26,6 +26,103 @@
 - (void)tearDown {
     [super tearDown];
 }
+
+- (void) testMoveOneStepBaseCase {
+    GameField *gameField = [[GameField alloc] initWithWidth:5 Height:5];
+    Snake *snake = [[Snake alloc]initWithGameField:gameField];
+    [snake moveOneStep];
+    Coordinate *head = snake.snakeBody.lastObject;
+    Coordinate *tail = snake.snakeBody.firstObject;
+    
+    XCTAssert(head.x == 1 && head.y == 2, @"head x %d, y %d", head.x, head.y);
+    XCTAssert(tail.x == 2 && tail.y == 2, @"tail x %d, y %d", tail.x, tail.y);
+    
+}
+
+- (void) testMoveOneStepWithDifferentDirection {
+    GameField *gameField = [[GameField alloc] initWithWidth:5 Height:5];
+    Snake *snake = [[Snake alloc]initWithGameField:gameField];
+    NSMutableArray *body = [NSMutableArray array];
+    [snake.snakeBody insertObject:[[Coordinate alloc] initWithCoordinateX:4 coordinateY:2] atIndex:0];
+    [snake changeDirection:up];
+    [snake moveOneStep];
+    Coordinate *head = snake.snakeBody.lastObject;
+    Coordinate *middle = snake.snakeBody[1];
+    Coordinate *tail = snake.snakeBody.firstObject;
+    
+    XCTAssert(head.x == 2 && head.y == 1, @"head x %d, y %d", head.x, head.y);
+    XCTAssert(middle.x == 2 && middle.y == 2, @"middle x %d, y %d", middle.x, middle.y);
+    XCTAssert(tail.x == 3 && tail.y == 2, @"tail x %d, y %d", tail.x, tail.y);
+}
+
+-(void) testMoveOneStepOnEdge {
+    GameField *gameField = [[GameField alloc] initWithWidth:5 Height:5];
+    Snake *snake = [[Snake alloc]initWithGameField:gameField];
+    NSMutableArray *body = [NSMutableArray array];
+    [body addObject:[[Coordinate alloc] initWithCoordinateX:1 coordinateY:1]];
+    [body addObject:[[Coordinate alloc] initWithCoordinateX:0 coordinateY:1]];
+    snake.snakeBody = body;
+    [snake moveOneStep];
+    Coordinate *head = snake.snakeBody.lastObject;
+    Coordinate *tail = snake.snakeBody.firstObject;
+    
+    XCTAssert(head.x == 4 && head.y == 1, @"head x %d, y %d", head.x, head.y);
+    XCTAssert(tail.x == 0 && tail.y == 1, @"tail x %d, y %d", tail.x, tail.y);
+}
+
+-(void) testMoveOneStepWithDifferentDirectionAndOnEdge {
+    GameField *gameField = [[GameField alloc] initWithWidth:5 Height:5];
+    Snake *snake = [[Snake alloc]initWithGameField:gameField];
+    NSMutableArray *body = [NSMutableArray array];
+    [body addObject:[[Coordinate alloc] initWithCoordinateX:0 coordinateY:1]];
+    [body addObject:[[Coordinate alloc] initWithCoordinateX:4 coordinateY:1]];
+    [body addObject:[[Coordinate alloc] initWithCoordinateX:3 coordinateY:1]];
+    [body addObject:[[Coordinate alloc] initWithCoordinateX:3 coordinateY:0]];
+
+    snake.snakeBody = body;
+    [snake changeDirection:up];
+    [snake moveOneStep];
+    
+    Coordinate *head = snake.snakeBody.lastObject;
+    Coordinate *body1 = snake.snakeBody[2];
+    Coordinate *body2 = snake.snakeBody[1];
+    Coordinate *tail = snake.snakeBody.firstObject;
+    
+    XCTAssert(head.x == 3 && head.y == 4, @"head x %d, y %d", head.x, head.y);
+    XCTAssert(body1.x == 3 && body1.y == 0, @"body1 x %d, y %d", body1.x, body1.y);
+    XCTAssert(body2.x == 3 && body2.y == 1, @"body2 x %d, y %d", body2.x, body2.y);
+    XCTAssert(tail.x == 4 && tail.y == 1, @"tail x %d, y %d", tail.x, tail.y);
+    
+}
+
+-(void) testMoveOneStepOnCorner {
+    GameField *gameField = [[GameField alloc] initWithWidth:5 Height:5];
+    Snake *snake = [[Snake alloc]initWithGameField:gameField];
+    NSMutableArray *body = [NSMutableArray array];
+    [body addObject:[[Coordinate alloc] initWithCoordinateX:0 coordinateY:4]];
+    [body addObject:[[Coordinate alloc] initWithCoordinateX:4 coordinateY:4]];
+    [body addObject:[[Coordinate alloc] initWithCoordinateX:4 coordinateY:0]];
+    [body addObject:[[Coordinate alloc] initWithCoordinateX:0 coordinateY:0]];
+    
+    snake.snakeBody = body;
+    [snake changeDirection:down];
+    [snake moveOneStep];
+    
+    Coordinate *head = snake.snakeBody.lastObject;
+    Coordinate *body1 = snake.snakeBody[2];
+    Coordinate *body2 = snake.snakeBody[1];
+    Coordinate *tail = snake.snakeBody.firstObject;
+    
+    XCTAssert(head.x == 0 && head.y == 1, @"head x %d, y %d", head.x, head.y);
+    XCTAssert(body1.x == 0 && body1.y == 0, @"body1 x %d, y %d", body1.x, body1.y);
+    XCTAssert(body2.x == 4 && body2.y == 0, @"body2 x %d, y %d", body2.x, body2.y);
+    XCTAssert(tail.x == 4 && tail.y == 4, @"tail x %d, y %d", tail.x, tail.y);
+    
+}
+
+
+
+
 
 - (void)testAddTailOnLeftEdge {
     GameField *gameField = [[GameField alloc] initWithWidth:4 Height:4];
@@ -45,7 +142,7 @@
     XCTAssert(tail.x == 1 && tail.y == 2, @"tail x %d, y %d", tail.x, tail.y);
 }
 
-- (void)testAddTailORightnEdge {
+- (void)testAddTailOnRightEdge {
     GameField *gameField = [[GameField alloc] initWithWidth:4 Height:4];
     Snake *snake = [[Snake alloc] initWithGameField:gameField];
     [snake changeDirection:up];
