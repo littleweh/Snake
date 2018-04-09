@@ -54,8 +54,6 @@
 -(void) startGame {
     self.snakeGameField = [[GameField alloc] initWithWidth:self.snakeGameView.frame.size.width/ 20
                                                     Height:self.snakeGameView.frame.size.height / 20];
-    // ToDo: delete
-    NSLog(@"gameField- width: %ld, height: %ld", (long)self.snakeGameField.width, (long)self.snakeGameField.height);
     
     self.startButton.hidden = YES;
     self.snakeGameView.hidden = NO;
@@ -287,7 +285,6 @@
         [self.view addConstraint:trailing];
         [self.view addConstraint:centerX];
         
-//        NSLayoutConstraint constraintsWithVisualFormat:@"H:|[viewA]-(padding)-[viewB]-|" options:0 metrics:@{@"padding": @(50)} views:NSDictionaryOfVariableBindings()];
     }
     
     [self.view layoutIfNeeded];
@@ -323,16 +320,6 @@
         [newBody insertObject:newPoint atIndex:i];
     }
     newSnake.snakeBody = newBody;
-
-    //ToDo: delete, for test
-    NSLog(@"----newSnake body position----");
-    [self showSnakePosition:newSnake];
-    [self showDirection:newSnake.direction];
-    NSLog(@"----self.snake body position----");
-    [self showSnakePosition:self.snake];
-    [self showDirection:self.snake.direction];
-    //ToDo: delete
-
     return newSnake;
 }
 
@@ -345,12 +332,6 @@
 
 -(void) snakeGameViewGetNewDirection: (Direction) newDirection {
     Direction originalDirection = [self directionForDeviceOrientationOriginalDirection:self.snake.direction];
-    // ToDo: delete
-    NSLog(@"newDirectionFromSnakeGameViewDelegate");
-    [self showDirection:newDirection];
-    NSLog(@"directionForDeviceOrientation");
-    [self showDirection:originalDirection];
-    // ToDo: delete
     
     if (originalDirection == self.snake.direction) {
         [self.snake changeDirection:newDirection];
