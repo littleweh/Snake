@@ -43,8 +43,7 @@
 }
 
 -(void) initializeTimer {
-//    float theInterval = 1.0 / 2.0;
-    float theInterval = 1.0;
+    float theInterval = 1.0 / 2.0;
     self.myTimer = [NSTimer
                     scheduledTimerWithTimeInterval:theInterval
                     target:self
@@ -53,28 +52,37 @@
                     repeats:YES
                     ];
 }
-- (void)willTransitionToTraitCollection:(UITraitCollection *)newCollection withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
-{
-    __weak typeof(self) weakSelf = self;
 
-    [super willTransitionToTraitCollection:newCollection withTransitionCoordinator:coordinator];
-    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
-        
-    } completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
-        // For test
-        [weakSelf.snakeGameView setNeedsLayout];
-        [weakSelf.snakeGameView setNeedsDisplay];
+-(void) startGame {
+    
+    self.snakeGameField = [[GameField alloc] initWithWidth:self.snakeGameView.frame.size.width/ 20
+                                                    Height:self.snakeGameView.frame.size.height / 20];
+    
+    NSLog(@"gameField- width: %ld, height: %ld", (long)self.snakeGameField.width, (long)self.snakeGameField.height);
+    
+    self.startButton.hidden = YES;
+    self.snakeGameView.hidden = NO;
+    
+    self.snake = [[Snake alloc] initWithGameField:self.snakeGameField];
+    self.fruit = [[Fruit alloc] initWithGameField:self.snakeGameField];
+    
+    [self.view layoutIfNeeded];
+    [self.snakeGameView setNeedsLayout];
+    [self.snakeGameView setNeedsDisplay];
+    
+    [self initializeTimer];
+    
+}
 
-    }];
+-(void) endGame {
+    self.snakeGameView.hidden = YES;
+    self.startButton.hidden = NO;
+    [self.myTimer invalidate];
+    self.myTimer = nil;
 }
 
 -(void)playSnakeGame {
     [self.snake moveOneStep];
-//    [self showSnakeDirection];
-
-    // ToDo: delete
-//    [self showSnakePosition];
-//    [self showFruitPosition];
 
     [self.snakeGameView setNeedsLayout];
     [self.snakeGameView setNeedsDisplay];
@@ -92,7 +100,7 @@
 -(Fruit *) generateNewFruit {
     Fruit * previousFruit = self.fruit;
     Fruit * newFruit = [[Fruit alloc] initWithGameField:self.snakeGameField];
-
+    
     for (int i = 0; i<self.snake.snakeBody.count; i++) {
         Coordinate* bodyPoint = self.snake.snakeBody[i];
         if (newFruit.coordinate.x == bodyPoint.x && newFruit.coordinate.y == bodyPoint.y) {
@@ -100,7 +108,7 @@
             break;
         }
     }
-
+    
     if (newFruit.coordinate.x == previousFruit.coordinate.x &&
         newFruit.coordinate.y == previousFruit.coordinate.y) {
         newFruit = [self generateNewFruit];
@@ -110,36 +118,7 @@
     
 }
 
--(void) startGame {
-
-    self.snakeGameField = [[GameField alloc] initWithWidth:self.snakeGameView.frame.size.width/ 20
-                                                    Height:self.snakeGameView.frame.size.height / 20];
-    NSLog(@"gameField- width: %ld, height: %ld", (long)self.snakeGameField.width, (long)self.snakeGameField.height);
-
-    self.startButton.hidden = YES;
-    self.snakeGameView.hidden = NO;
-    
-    self.snake = [[Snake alloc] initWithGameField:self.snakeGameField];
-    self.fruit = [[Fruit alloc] initWithGameField:self.snakeGameField];
-    // ToDo: delete the test code in Fruit init func
-
-//    [self showSnakePosition];
-
-    [self.view layoutIfNeeded];
-    [self.snakeGameView setNeedsLayout];
-    [self.snakeGameView setNeedsDisplay];
-    
-    [self initializeTimer];
-    
-}
-
--(void) endGame {
-    self.snakeGameView.hidden = YES;
-    self.startButton.hidden = NO;
-    [self.myTimer invalidate];
-    self.myTimer = nil;
-}
-
+// MARK: UI Setup
 -(void) setupStartButton {
     self.startButton.backgroundColor = [UIColor blackColor];
     [self.startButton setTintColor:[UIColor yellowColor]];
@@ -336,6 +315,8 @@
     [self.snakeGameView addGestureRecognizer:swipeDown];
 }
 
+// MARK: snakeGameViewDelegate
+
 -(Snake*) snakeForSnakeGameView: (SnakeGameView*) snakeView {
 
     Snake *newSnake = [self.snake copy];
@@ -357,6 +338,80 @@
     //ToDo: delete
 
     return newSnake;
+}
+
+-(Fruit*) fruitForSnakeGameView: (SnakeGameView*) snakeView {
+    Coordinate *newFruitPoint = [self coordinateForDeviceOrientationWithOriginalCooridnate:self.fruit.coordinate];
+    Fruit *newFruit = [[Fruit alloc] initWithCoordinate:newFruitPoint];
+    [self showFruitPosition:newFruit];
+    return newFruit;
+}
+
+-(void) snakeGameViewGetNewDirection: (Direction) newDirection {
+    Direction originalDirection = [self directionForDeviceOrientationOriginalDirection:self.snake.direction];
+    // ToDo: delete
+    NSLog(@"newDirectionFromSnakeGameViewDelegate");
+    [self showDirection:newDirection];
+    NSLog(@"directionForDeviceOrientation");
+    [self showDirection:originalDirection];
+    // ToDo: delete
+    
+    if (originalDirection == self.snake.direction) {
+        switch (newDirection) {
+            case up:
+            case down:
+                if (originalDirection == left || right) {
+                    [self.snake setDirection:newDirection];
+                }
+                break;
+            case left:
+            case right:
+                if (originalDirection == up || down) {
+                    [self.snake setDirection:newDirection];
+                }
+                break;
+        }
+    } else {
+        switch (newDirection) {
+            case up:
+                if (originalDirection == left || right) {
+                    [self.snake setDirection:right];
+                }
+                break;
+            case down:
+                if (originalDirection == left || right) {
+                    [self.snake setDirection:left];
+                    
+                }
+                break;
+            case left:
+                if (originalDirection == up || down) {
+                    [self.snake setDirection:up];
+                }
+                break;
+            case right:
+                if (originalDirection == up || down) {
+                    [self.snake setDirection:down];
+                }
+                break;
+        }
+    }
+}
+
+// MARK: Device Orientation
+
+- (void)willTransitionToTraitCollection:(UITraitCollection *)newCollection withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
+{
+    __weak typeof(self) weakSelf = self;
+    
+    [super willTransitionToTraitCollection:newCollection withTransitionCoordinator:coordinator];
+    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+        
+    } completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+        [weakSelf.snakeGameView setNeedsLayout];
+        [weakSelf.snakeGameView setNeedsDisplay];
+        
+    }];
 }
 
 -(Coordinate*) coordinateForDeviceOrientationWithOriginalCooridnate: (Coordinate*) point {
@@ -391,67 +446,8 @@
     return newDirection;
 }
 
--(Fruit*) fruitForSnakeGameView: (SnakeGameView*) snakeView {
-    Coordinate *newFruitPoint = [self coordinateForDeviceOrientationWithOriginalCooridnate:self.fruit.coordinate];
-    Fruit *newFruit = [[Fruit alloc] initWithCoordinate:newFruitPoint];
-    [self showFruitPosition:newFruit];
-    return newFruit;
-}
 
--(void) snakeGameViewGetNewDirection: (Direction) newDirection {
-    Direction originalDirection = [self directionForDeviceOrientationOriginalDirection:self.snake.direction];
-
-    NSLog(@"newDirectionFromSnakeGameViewDelegate");
-    [self showDirection:newDirection];
-    NSLog(@"directionForDeviceOrientation");
-    [self showDirection:originalDirection];
-
-    if (originalDirection == self.snake.direction) {
-        switch (newDirection) {
-            case up:
-            case down:
-                if (originalDirection == left || right) {
-                    [self.snake setDirection:newDirection];
-                }
-                break;
-            case left:
-            case right:
-                if (originalDirection == up || down) {
-                    [self.snake setDirection:newDirection];
-                }
-                break;
-        }
-    } else {
-        switch (newDirection) {
-            case up:
-                if (originalDirection == left || right) {
-                    [self.snake setDirection:right];
-                }
-                break;
-            case down:
-                if (originalDirection == left || right) {
-                    [self.snake setDirection:left];
-
-                }
-                break;
-            case left:
-                if (originalDirection == up || down) {
-                    [self.snake setDirection:up];
-                }
-                break;
-            case right:
-                if (originalDirection == up || down) {
-                    [self.snake setDirection:down];
-                }
-                break;
-        }
-    }
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-}
-
+// MARK: to be deleted
 - (void) showSnakePosition: (Snake*) snake {
     for (Coordinate* body in snake.snakeBody) {
         NSLog(@"x: %ld, y: %ld", (long)body.x, body.y);
@@ -477,6 +473,10 @@
 
 - (void) showFruitPosition: (Fruit*) fruit {
     NSLog(@"Fruit - x: %ld, y: %ld", (long)fruit.coordinate.x, fruit.coordinate.y);
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
 }
 
 
