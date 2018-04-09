@@ -8,13 +8,24 @@
 
 #import "Snake.h"
 
-@interface Snake(){
+@interface Snake()
+{
     NSUInteger bodyLength;
     NSUInteger addLengthNum;
 }
 @end
 
 @implementation Snake
+
+-(id) copyWithZone:(NSZone *)zone {
+    Snake *snakeCopy = [[Snake allocWithZone:zone] init];
+    if (snakeCopy) {
+        [snakeCopy setDirection:self.direction];
+        [snakeCopy setGameField:self.gameField];
+        [snakeCopy setSnakeBody:self.snakeBody];
+    }
+    return snakeCopy;
+}
 
 -(instancetype) initWithGameField: (GameField*) gameField {
     if ([super init]) {
@@ -33,8 +44,10 @@
         [body insertObject:head atIndex:0];
         
         for (int i = 1; i < bodyLength; i++) {
-            Coordinate *bodyPoint = [[Coordinate alloc] initWithCoordinateX: (head.x+i) % gameField.width
-                                                                coordinateY:head.y];
+            Coordinate *bodyPoint = [[Coordinate alloc]
+                                     initWithCoordinateX: (head.x+i) % gameField.width
+                                     coordinateY:head.y
+                                     ];
             [body insertObject:bodyPoint atIndex:0];
         }
         
@@ -70,6 +83,18 @@
     [self snakeBodyDequeue];
 }
 
+-(void) changeDirection: (Direction) direction {
+    if (direction == left || direction == right) {
+        if (self.direction == up || self.direction == down) {
+            [self setDirection:direction];
+        }
+    } else if (direction == up || direction == down) {
+        if (self.direction == left || self.direction == right) {
+            [self setDirection:direction];
+        }
+    }
+}
+
 -(void) addBodyLengthNumber: (NSUInteger) number {
     NSRange range = NSMakeRange(0, 2);
     NSArray* lastTwoNodes = [[self.snakeBody subarrayWithRange:range] mutableCopy];
@@ -96,18 +121,6 @@
 -(BOOL) isHeadHitPoint: (Coordinate*) point {
     Coordinate* snakeHead = [self.snakeBody.lastObject copy];
     return [snakeHead isEqual:point];    
-}
-
--(void) changeDirection: (Direction) direction {
-    if (direction == left || direction == right) {
-        if (self.direction == up || self.direction == down) {
-            [self setDirection:direction];
-        }
-    } else if (direction == up || direction == down) {
-        if (self.direction == left || self.direction == right) {
-            [self setDirection:direction];
-        }
-    }
 }
 
 -(void) snakeBodyEnqueueWithPoint: (Coordinate*) point {

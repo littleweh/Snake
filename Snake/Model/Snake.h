@@ -11,23 +11,23 @@
 #import "GameField.h"
 
 typedef enum NSUInteger {
-    left = 0,
+    up = 0,
     right = 1,
-    up = 2,
-    down = 3
+    down = 2,
+    left = 3
 } Direction;
 
-@interface Snake : NSObject
+@interface Snake : NSObject <NSCopying>
 @property (strong, atomic, readwrite) NSMutableArray* snakeBody;
 @property (assign, atomic, readwrite) Direction direction;
 @property (strong, atomic, readwrite) GameField* gameField;
 
 -(instancetype) initWithGameField: (GameField*) gameField;
 -(void) moveOneStep;
+-(void) changeDirection: (Direction) direction;
 -(void) addBodyLengthNumber: (NSUInteger) number;
 -(BOOL) isHeadHitBody;
 -(BOOL) isHeadHitPoint: (Coordinate*) point;
--(void) changeDirection: (Direction) direction;
 @end
 
 

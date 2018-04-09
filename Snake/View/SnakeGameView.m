@@ -12,6 +12,7 @@
 #import "Fruit.h"
 
 #define blockSize 20.0
+// ToDo: blockSize flexible
 
 @interface SnakeGameView() {
     int maxY;
@@ -20,9 +21,6 @@
 @end
 
 @implementation SnakeGameView
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-
 -(instancetype) initWithFrame: (CGRect) frame {
     if ([super initWithFrame:frame]) {
         self.frame = frame;
@@ -38,15 +36,19 @@
         switch (direction) {
             case UISwipeGestureRecognizerDirectionUp:
                 [self.delegate snakeGameViewGetNewDirection:up];
+                NSLog(@"direction: up");
                 break;
             case UISwipeGestureRecognizerDirectionDown:
                 [self.delegate snakeGameViewGetNewDirection:down];
+                NSLog(@"direction: down");
                 break;
             case UISwipeGestureRecognizerDirectionLeft:
                 [self.delegate snakeGameViewGetNewDirection:left];
+                NSLog(@"direction: left");
                 break;
             case UISwipeGestureRecognizerDirectionRight:
                 [self.delegate snakeGameViewGetNewDirection:right];
+                NSLog(@"direction: right");
                 break;
         }
     }
@@ -70,21 +72,24 @@
     if (point == nil) {
         return CGPointZero;
     }
+
+    maxX = self.frame.size.width / blockSize;
+    maxY = self.frame.size.height / blockSize;
+
     NSInteger newX = point.x % maxX;
     if (newX < 0) newX += maxX;
 
     NSInteger newY = point.y % maxY;
     if (newY < 0) newY += maxY;
-
     return CGPointMake(newX * blockSize, newY * blockSize);
 }
 
--(void) drawSnake: (NSMutableArray*) snake {
-    if (snake == nil) {
+-(void) drawSnake: (NSMutableArray*) snakeBody {
+    if (snakeBody == nil) {
         return;
     }
-    for (int i = 0; i < [snake count]; i++) {
-        CGPoint newPoint = [self modelPointToViewPoint:snake[i]];
+    for (int i = 0; i < [snakeBody count]; i++) {
+        CGPoint newPoint = [self modelPointToViewPoint:snakeBody[i]];
         CGRect rect = CGRectMake(newPoint.x, newPoint.y, blockSize, blockSize);
         CGContextRef context = UIGraphicsGetCurrentContext();
         CGContextSetRGBFillColor(context, 1.0, 0.0, 0.0, 1.0);
