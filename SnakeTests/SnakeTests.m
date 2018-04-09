@@ -15,6 +15,9 @@
 
 @interface Snake ()
 @property (strong, atomic, readwrite) NSMutableArray* snakeBody;
+@property (assign, atomic, readwrite) Direction direction;
+
+
 @end
 
 @implementation SnakeTests
@@ -120,9 +123,95 @@
     
 }
 
+-(void) testChangeDirectionToUp {
+    GameField *gameField = [[GameField alloc] initWithWidth:4 Height:4];
+    Snake *snake = [[Snake alloc]initWithGameField:gameField];
+    [snake changeDirection:up];
+    XCTAssertEqual(snake.direction, up, @"snake direction: %u", snake.direction);
+    
+    [snake setDirection:right];
+    [snake changeDirection:up];
+    XCTAssertEqual(snake.direction, up, @"snake direction: %u", snake.direction);
+    
+    [snake setDirection:down];
+    [snake changeDirection:up];
+    XCTAssertEqual(snake.direction, down, @"snake direction: %u", snake.direction);
+    
+    [snake setDirection:up];
+    [snake changeDirection:up];
+    XCTAssertEqual(snake.direction, up, @"snake direction: %u", snake.direction);
+    
+}
 
+-(void) testChangeDirectionToDown {
+    GameField *gameField = [[GameField alloc] initWithWidth:4 Height:4];
+    Snake *snake = [[Snake alloc]initWithGameField:gameField];
+    [snake changeDirection:down];
+    XCTAssertEqual(snake.direction, down, @"snake direction: %u", snake.direction);
+    
+    [snake setDirection:right];
+    [snake changeDirection:down];
+    XCTAssertEqual(snake.direction, down, @"snake direction: %u", snake.direction);
+    
+    [snake setDirection:down];
+    [snake changeDirection:down];
+    XCTAssertEqual(snake.direction, down, @"snake direction: %u", snake.direction);
+    
+    [snake setDirection:up];
+    [snake changeDirection:down];
+    XCTAssertEqual(snake.direction, up, @"snake direction: %u", snake.direction);
+    
+}
 
+-(void) testChangeDirectionToLeft {
+    GameField *gameField = [[GameField alloc] initWithWidth:4 Height:4];
+    Snake *snake = [[Snake alloc]initWithGameField:gameField];
+    [snake changeDirection:left];
+    XCTAssertEqual(snake.direction, left, @"snake direction: %u", snake.direction);
+    
+    [snake setDirection:right];
+    [snake changeDirection:left];
+    XCTAssertEqual(snake.direction, right, @"snake direction: %u", snake.direction);
+    
+    [snake setDirection:down];
+    [snake changeDirection:left];
+    XCTAssertEqual(snake.direction, left, @"snake direction: %u", snake.direction);
+    
+    [snake setDirection:up];
+    [snake changeDirection:left];
+    XCTAssertEqual(snake.direction, left, @"snake direction: %u", snake.direction);
+    
+}
 
+-(void) testChangeDirectionToRight {
+    GameField *gameField = [[GameField alloc] initWithWidth:4 Height:4];
+    Snake *snake = [[Snake alloc]initWithGameField:gameField];
+    [snake changeDirection:right];
+    XCTAssertEqual(snake.direction, left, @"snake direction: %u", snake.direction);
+    
+    [snake setDirection:right];
+    [snake changeDirection:right];
+    XCTAssertEqual(snake.direction, right, @"snake direction: %u", snake.direction);
+    
+    [snake setDirection:down];
+    [snake changeDirection:right];
+    XCTAssertEqual(snake.direction, right, @"snake direction: %u", snake.direction);
+    
+    [snake setDirection:up];
+    [snake changeDirection:right];
+    XCTAssertEqual(snake.direction, right, @"snake direction: %u", snake.direction);
+    
+}
+
+-(void) testChangeDirectionInput {
+    GameField *gameField = [[GameField alloc] initWithWidth:4 Height:4];
+    Snake *snake = [[Snake alloc]initWithGameField:gameField];
+    [snake changeDirection:14];
+    
+    XCTAssertNil(@"");
+    
+    
+}
 
 - (void)testAddTailOnLeftEdge {
     GameField *gameField = [[GameField alloc] initWithWidth:4 Height:4];

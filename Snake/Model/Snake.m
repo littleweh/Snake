@@ -77,6 +77,8 @@
 }
 
 -(void) changeDirection: (Direction) direction {
+    
+    NSAssert(direction == up || direction == down || direction == left || direction == right, @"Must be up, down, left, right");
     if (direction == left || direction == right) {
         if (self.direction == up || self.direction == down) {
             [self setDirection:direction];
