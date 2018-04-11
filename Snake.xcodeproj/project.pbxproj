@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7921EF9E207DE07400C552D2 /* CoordinateTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7921EF9D207DE07400C552D2 /* CoordinateTests.m */; };
 		792B97FF206C78B5003BABCB /* Fruit.m in Sources */ = {isa = PBXBuildFile; fileRef = 792B97FE206C78B5003BABCB /* Fruit.m */; };
 		79C05749206B81CA00F71637 /* Snake.m in Sources */ = {isa = PBXBuildFile; fileRef = 79C05748206B81CA00F71637 /* Snake.m */; };
 		79C0574C206B9A9800F71637 /* Coordinate.m in Sources */ = {isa = PBXBuildFile; fileRef = 79C0574B206B9A9800F71637 /* Coordinate.m */; };
@@ -33,6 +34,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		7921EF9D207DE07400C552D2 /* CoordinateTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CoordinateTests.m; sourceTree = "<group>"; };
 		792B97FD206C78B5003BABCB /* Fruit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Fruit.h; sourceTree = "<group>"; };
 		792B97FE206C78B5003BABCB /* Fruit.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Fruit.m; sourceTree = "<group>"; };
 		79C05747206B81CA00F71637 /* Snake.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Snake.h; sourceTree = "<group>"; };
@@ -117,6 +119,7 @@
 			children = (
 				79E7A18E206A33B800866F1A /* SnakeTests.m */,
 				79E7A190206A33B800866F1A /* Info.plist */,
+				7921EF9D207DE07400C552D2 /* CoordinateTests.m */,
 			);
 			path = SnakeTests;
 			sourceTree = "<group>";
@@ -263,6 +266,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				79C546A2207B130300E670B7 /* Snake.m in Sources */,
+				7921EF9E207DE07400C552D2 /* CoordinateTests.m in Sources */,
 				79E7A18F206A33B800866F1A /* SnakeTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

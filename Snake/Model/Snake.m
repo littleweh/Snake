@@ -28,6 +28,10 @@
 
         NSAssert(gameField.width >= 4 , @"must be larger than 4");
         NSAssert(gameField.height >= 4 , @"must be larger than 4");
+        
+        if (gameField.width < 4 || gameField.height < 4) {
+            return NULL;
+        }
 
         self.gameField = gameField;
         NSInteger centerX = gameField.width / 2;
@@ -79,6 +83,7 @@
 -(void) changeDirection: (Direction) direction {
     
     NSAssert(direction == up || direction == down || direction == left || direction == right, @"Must be up, down, left, right");
+
     if (direction == left || direction == right) {
         if (self.direction == up || self.direction == down) {
             [self setDirection:direction];

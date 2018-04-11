@@ -6,16 +6,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Snake/Model/Coordinate.m"
-            timestampString = "545033966.618127"
+            timestampString = "545130628.7781971"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "34"
-            endingLineNumber = "34"
-            landmarkName = "-isEqualToCoordinate:"
+            startingLineNumber = "41"
+            endingLineNumber = "41"
+            landmarkName = "-isEqual:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

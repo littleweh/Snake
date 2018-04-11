@@ -16,6 +16,7 @@
 @interface Snake ()
 @property (strong, atomic, readwrite) NSMutableArray* snakeBody;
 @property (assign, atomic, readwrite) Direction direction;
+@property (strong, nonatomic, readwrite) GameField* myGameField;
 
 
 @end
@@ -277,6 +278,8 @@
 
 // MARK: changeDirection:
 
+// ToDo: invalid input
+
 -(void) testChangeDirectionToUp {
     GameField *gameField = [[GameField alloc] initWithWidth:4 Height:4];
     Snake *snake = [[Snake alloc]initWithGameField:gameField];
@@ -358,13 +361,6 @@
 }
 
 
-//-(void) testChangeDirectionInput {
-//    GameField *gameField = [[GameField alloc] initWithWidth:4 Height:4];
-//    Snake *snake = [[Snake alloc]initWithGameField:gameField];
-//    [snake changeDirection:14];
-//
-//
-//}
 
 // MARK: AddBodyLengthNumber:
 
@@ -510,6 +506,28 @@
     Coordinate *tail = snake.snakeBody.firstObject;
     XCTAssert(tail.x == 2 && tail.y == 3, @"tail x %d, y %d", tail.x, tail.y);
 }
+
+// Extreme case: add tail (length > 1) on corner
+-(void) testAddTailCrossEdge {
+    GameField *gameField = [[GameField alloc] initWithWidth:5 Height:5];
+    Snake *snake = [[Snake alloc] initWithGameField:gameField];
+    
+    NSMutableArray *body = [NSMutableArray array];
+    [body addObject:[[Coordinate alloc]initWithCoordinateX:1 coordinateY:0]];
+    [body addObject:[[Coordinate alloc]initWithCoordinateX:2 coordinateY:0]];
+    [body addObject:[[Coordinate alloc]initWithCoordinateX:2 coordinateY:1]];
+    
+    snake.snakeBody = body;
+    
+    [snake addBodyLengthNumber:2];
+    
+    Coordinate *tail = snake.snakeBody.firstObject;
+    Coordinate *tail2 = snake.snakeBody[1];
+    
+    XCTAssert(tail.x == 4 && tail.y == 0, @"tail x: %d, y: %d", tail.x, tail.y);
+    XCTAssert(tail2.x == 0 && tail2.y == 0, @"tail2 x: %d, y:%d", tail2.x, tail2.y);
+}
+
 
 // MARK: isHeadHitBody
 
