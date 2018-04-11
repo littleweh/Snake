@@ -13,25 +13,25 @@
     NSUInteger bodyLength;
     NSUInteger addLengthNum;
 }
+@property (strong, atomic, readwrite) NSMutableArray <Coordinate *> * snakeBody;
+@property (assign, atomic, readwrite) Direction direction;
+@property (strong, atomic, readwrite) GameField* gameField;
 @end
 
 @implementation Snake
-
--(id) copyWithZone:(NSZone *)zone {
-    Snake *snakeCopy = [[Snake allocWithZone:zone] init];
-    if (snakeCopy) {
-        [snakeCopy setDirection:self.direction];
-        [snakeCopy setGameField:self.gameField];
-        [snakeCopy setSnakeBody:self.snakeBody];
-    }
-    return snakeCopy;
-}
 
 -(instancetype) initWithGameField: (GameField*) gameField {
     if ([super init]) {
         self.direction = left;
         bodyLength = 2;
         addLengthNum = 2;
+
+        NSAssert(gameField.width >= 4 , @"must be larger than 4");
+        NSAssert(gameField.height >= 4 , @"must be larger than 4");
+        
+        if (gameField.width < 4 || gameField.height < 4) {
+            return NULL;
+        }
 
         self.gameField = gameField;
         NSInteger centerX = gameField.width / 2;
@@ -81,6 +81,9 @@
 }
 
 -(void) changeDirection: (Direction) direction {
+    
+    NSAssert(direction == up || direction == down || direction == left || direction == right, @"Must be up, down, left, right");
+
     if (direction == left || direction == right) {
         if (self.direction == up || self.direction == down) {
             [self setDirection:direction];
@@ -93,29 +96,39 @@
 }
 
 -(void) addBodyLengthNumber: (NSUInteger) number {
+    
+    NSAssert(number > 0, @"body lenth to be added should be larger than 0");
+    NSAssert(number < MIN(self.gameField.width, self.gameField.height), @"body length to be added shoub not be larger than gameField width/height");
+    
     NSRange range = NSMakeRange(0, 2);
     NSArray* lastTwoNodes = [[self.snakeBody subarrayWithRange:range] mutableCopy];
     Coordinate* lastNode = lastTwoNodes[0];
     Coordinate* previousNode = lastTwoNodes[1];
-    NSUInteger dx = lastNode.x - previousNode.x;
-    NSUInteger dy = lastNode.y - previousNode.y;
+    NSInteger dx = lastNode.x - previousNode.x;
+    NSInteger dy = lastNode.y - previousNode.y;
 
     for (int i = 0; i < number; i++) {
         Coordinate* newTail = [self.snakeBody.firstObject copy];
-        newTail.x += dx;
-        newTail.y += dy;
+        newTail.x = (newTail.x + dx) % self.gameField.width;
+        if ( newTail.x < 0) { newTail.x += self.gameField.width; }
+        newTail.y = (newTail.y + dy ) % self.gameField.height;
+        if (newTail.y < 0 ) { newTail.y += self.gameField.height; }
         [self.snakeBody insertObject:newTail atIndex:0];
     }
 }
 
 -(BOOL) isHeadHitBody {
     Coordinate* snakeHead = [self.snakeBody.lastObject copy];
-    NSRange range = NSMakeRange(0, self.snakeBody.count-2);
-    NSArray* snakeWithouHead = [self.snakeBody subarrayWithRange:range];
-    return [snakeWithouHead containsObject:snakeHead];
+    NSMutableArray* snakeWithoutHead = [self.snakeBody mutableCopy];
+    [snakeWithoutHead removeLastObject];
+    return [snakeWithoutHead containsObject:snakeHead];
 }
 
 -(BOOL) isHeadHitPoint: (Coordinate*) point {
+    
+    NSAssert(point.x >=0 && point.y >= 0, @"point x: %ld, y: %ld should be larger than or equal to 0");
+    NSAssert(point.x <self.gameField.width && point.y < self.gameField.height, @"point x: %ld, y: %ld should be less than game field width/ height");
+
     Coordinate* snakeHead = [self.snakeBody.lastObject copy];
     return [snakeHead isEqual:point];    
 }
