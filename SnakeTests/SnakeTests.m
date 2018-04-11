@@ -368,6 +368,9 @@
 
 // MARK: AddBodyLengthNumber:
 
+// ToDo: invalid input
+
+// Base case
 -(void) testAddBodyLengthTailOnRight {
     GameField *gameField = [[GameField alloc] initWithWidth:5 Height:5];
     Snake *snake = [[Snake alloc] initWithGameField:gameField];
@@ -438,6 +441,8 @@
     
 }
 
+// Extreme case: add tail on edge
+
 - (void)testAddTailOnLeftEdge {
     GameField *gameField = [[GameField alloc] initWithWidth:5 Height:5];
     Snake *snake = [[Snake alloc] initWithGameField:gameField];
@@ -506,7 +511,9 @@
     XCTAssert(tail.x == 2 && tail.y == 3, @"tail x %d, y %d", tail.x, tail.y);
 }
 
--(void) testIsHeadHitBodyBeginning {
+// MARK: isHeadHitBody
+
+-(void) testIsHeadHitBodyDefault {
     GameField *gameField = [[GameField alloc] initWithWidth:5 Height:5];
     Snake *snake = [[Snake alloc] initWithGameField:gameField];
     
@@ -518,6 +525,7 @@
     
     XCTAssertTrue([snake isHeadHitBody], @"isHeadHitBody failed");
 }
+
 -(void) testIsHeadHitBodyAfterMoveOneStepOnEdge {
     GameField *gameField = [[GameField alloc] initWithWidth:5 Height:5];
     Snake *snake = [[Snake alloc] initWithGameField:gameField];
@@ -576,6 +584,10 @@
     
 }
 
+// MARK: isHeadHitPoint:
+
+// ToDo: invalid input
+
 -(void) testIsHeadHitPoint {
     GameField *gameField = [[GameField alloc] initWithWidth:4 Height:4];
     Snake *snake = [[Snake alloc] initWithGameField:gameField];
@@ -589,21 +601,6 @@
     
     Coordinate *point = [[Coordinate alloc]initWithCoordinateX:1 coordinateY:2];
     
-    XCTAssert([snake isHeadHitPoint:point] == YES, @"isHeadHitPoint failed");
-}
-
--(void) testIsHeadHitPointPointerEqual {
-    GameField *gameField = [[GameField alloc] initWithWidth:4 Height:4];
-    Snake *snake = [[Snake alloc] initWithGameField:gameField];
-    
-    NSMutableArray *body = [NSMutableArray array];
-    [body addObject:[[Coordinate alloc] initWithCoordinateX: 2 coordinateY: 3]];
-    [body addObject:[[Coordinate alloc]initWithCoordinateX:1 coordinateY:3]];
-    [body addObject:[[Coordinate alloc]initWithCoordinateX:1 coordinateY:2]];
-    
-    snake.snakeBody = body;
-    
-    Coordinate *point = snake.snakeBody.lastObject;
     XCTAssert([snake isHeadHitPoint:point] == YES, @"isHeadHitPoint failed");
 }
 
