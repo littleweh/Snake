@@ -30,8 +30,7 @@
     [super tearDown];
 }
 
-// MARKDOWN: moveOneStep
-
+// MARK: moveOneStep
 
 // base cases: up, down, left, right
 - (void) testMoveOneStepToLeft {
@@ -276,7 +275,7 @@
     
 }
 
-// MARKDOWN: changeDirection:
+// MARK: changeDirection:
 
 -(void) testChangeDirectionToUp {
     GameField *gameField = [[GameField alloc] initWithWidth:4 Height:4];
@@ -358,6 +357,7 @@
     
 }
 
+
 //-(void) testChangeDirectionInput {
 //    GameField *gameField = [[GameField alloc] initWithWidth:4 Height:4];
 //    Snake *snake = [[Snake alloc]initWithGameField:gameField];
@@ -365,6 +365,8 @@
 //
 //
 //}
+
+// MARK: AddBodyLengthNumber:
 
 -(void) testAddBodyLengthTailOnRight {
     GameField *gameField = [[GameField alloc] initWithWidth:5 Height:5];
