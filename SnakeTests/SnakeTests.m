@@ -10,13 +10,13 @@
 #import "Snake.h"
 
 @interface SnakeTests : XCTestCase
-
+@property (strong, nonatomic, readwrite) GameField* myGameField;
+@property (strong, nonatomic, readwrite) Snake* mySnake;
 @end
 
 @interface Snake ()
 @property (strong, atomic, readwrite) NSMutableArray* snakeBody;
 @property (assign, atomic, readwrite) Direction direction;
-@property (strong, nonatomic, readwrite) GameField* myGameField;
 
 
 @end
@@ -25,10 +25,38 @@
 
 - (void)setUp {
     [super setUp];
+    self.myGameField = [[GameField alloc]initWithWidth:5 Height:5];
+    self.mySnake = [[Snake alloc]initWithGameField:self.myGameField];
+    
 }
 
 - (void)tearDown {
     [super tearDown];
+    self.myGameField = nil;
+    self.mySnake = nil;
+}
+
+// MARK: initWithGameField:
+-(void) testInitWithGameFieldNotExist {
+    Snake* snake = [[Snake alloc]initWithGameField:nil];
+    XCTAssert(snake == nil, @"initWithGameField: with no gameField input -failed");
+}
+
+-(void) testInitWithGameFieldNotGameFieldClass {
+    Snake* snake = [[Snake alloc]initWithGameField: self.mySnake];
+    XCTAssert(snake == nil, @"initWithGameField: with input not GameField class -failed");
+}
+
+-(void) testInitWithGameField {
+    Snake* snake = [[Snake alloc]initWithGameField: self.myGameField];
+    XCTAssert([snake isKindOfClass:[Snake class]], @"snake init return Snake");
+    XCTAssert(snake.direction == left, @"snake init test, direction");
+    XCTAssert(snake.snakeBody.count == 2, @"snake init test, body length");
+    Coordinate *head = snake.snakeBody.lastObject;
+    Coordinate *tail = snake.snakeBody.firstObject;
+    
+    XCTAssert(head.x == self.myGameField.width / 2 && head.y == self.myGameField.height / 2, @"head x: %d, y: %d, gameField center x: %d, y: %d", head.x, head.y, self.myGameField.width / 2, self.myGameField.height / 2);
+    
 }
 
 // MARK: moveOneStep
