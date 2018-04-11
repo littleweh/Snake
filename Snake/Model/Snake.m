@@ -21,6 +21,15 @@
 @implementation Snake
 
 -(instancetype) initWithGameField: (GameField*) gameField {
+        
+    if (![gameField isKindOfClass:[GameField class]]) {
+        return nil;
+    }
+
+    if (!gameField) {
+        return nil;
+    }
+
     if ([super init]) {
         self.direction = left;
         bodyLength = 2;
