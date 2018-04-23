@@ -10,7 +10,7 @@
 
 @implementation GameField
 -(instancetype) initWithWidth: (NSInteger) width Height: (NSInteger) height {
-    if ([super init]) {
+    if (self = [super init]) {
         self.width = width;
         self.height = height;
     }

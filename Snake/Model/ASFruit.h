@@ -11,7 +11,7 @@
 #import "GameField.h"
 
 @interface ASFruit : NSObject
-@property (strong, atomic, readwrite) Coordinate* coordinate;
+@property (strong, nonatomic, readwrite) Coordinate* coordinate;
 -(instancetype) initWithGameField: (GameField*) gameField;
 -(instancetype) initWithCoordinate: (Coordinate*) coordinate;
 @end

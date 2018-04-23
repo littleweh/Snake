@@ -6,7 +6,7 @@
 //  Copyright © 2018 Ada Kao. All rights reserved.
 //
 
-#import "SnakeGameView.h"
+#import "ASSnakeGameView.h"
 #import "Coordinate.h"
 #import "ASSnake.h"
 #import "ASFruit.h"
@@ -14,15 +14,15 @@
 #define blockSize 20.0
 // ToDo: blockSize flexible
 
-@interface SnakeGameView() {
-    int maxY;
-    int maxX;
+@interface ASSnakeGameView() {
+    NSInteger maxY;
+    NSInteger maxX;
 }
 @end
 
-@implementation SnakeGameView
+@implementation ASSnakeGameView
 -(instancetype) initWithFrame: (CGRect) frame {
-    if ([super initWithFrame:frame]) {
+    if (self = [super initWithFrame:frame]) {
         self.frame = frame;
         self->maxX = frame.size.width / blockSize;
         self->maxY = frame.size.height / blockSize;
@@ -53,12 +53,12 @@
 - (void)drawRect:(CGRect)rect {
     [super drawRect:rect];
     
-    if ([self.delegate respondsToSelector:@selector(snakeForSnakeGameView:)]) {
-        ASSnake* snake = [delegate snakeForSnakeGameView:self];
-        [self drawSnake:snake.snakeBody];
+    if ([self.delegate respondsToSelector:@selector(snakeGameViewWillReturnASSnakeBody:)]) {
+        NSMutableArray <Coordinate *> *snakeBody = [delegate snakeGameViewWillReturnASSnakeBody:self];
+        [self drawSnake:snakeBody];
     }
-    if ([self.delegate respondsToSelector:@selector(fruitForSnakeGameView:)]) {
-        ASFruit* fruit = [delegate fruitForSnakeGameView:self];
+    if ([self.delegate respondsToSelector:@selector(snakeGameViewWillReturnASFruit:)]) {
+        ASFruit* fruit = [delegate snakeGameViewWillReturnASFruit:self];
         [self drawFruit: fruit];
     }
     
@@ -80,7 +80,7 @@
     return CGPointMake(newX * blockSize, newY * blockSize);
 }
 
--(void) drawSnake: (NSMutableArray*) snakeBody {
+-(void) drawSnake: (NSMutableArray <Coordinate*> *) snakeBody {
     if (snakeBody == nil) {
         return;
     }
@@ -100,9 +100,15 @@
     }
     CGPoint fruitPoint = [self modelPointToViewPoint:fruit.coordinate];
     CGRect rect = CGRectMake(fruitPoint.x, fruitPoint.y, blockSize, blockSize);
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextSetRGBFillColor(context, 0.0, 1.0, 0.0, 1.0);
-    CGContextFillEllipseInRect(context, rect);
+
+    UIBezierPath *fruitPath = [UIBezierPath bezierPathWithOvalInRect:rect];
+
+    [fruitPath closePath];
+    
+    UIColor *fillColor = [UIColor greenColor];
+    [fillColor setFill];
+    
+    [fruitPath fill];
 }
 
 @synthesize delegate;

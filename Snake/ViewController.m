@@ -8,7 +8,7 @@
 
 #import "ViewController.h"
 #import "ASSnake.h"
-#import "SnakeGameView.h"
+#import "ASSnakeGameView.h"
 #import "ASFruit.h"
 #import "GameField.h"
 
@@ -26,7 +26,7 @@
 
     self.view.backgroundColor = [UIColor whiteColor];
     
-    self.snakeGameView = [[SnakeGameView alloc] initWithFrame:self.view.bounds];
+    self.snakeGameView = [[ASSnakeGameView alloc] initWithFrame:self.view.bounds];
     self.startButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     
     [self.view addSubview:self.snakeGameView];
@@ -69,6 +69,7 @@
     
 }
 
+// ToDo: timer memory leak
 -(void) endGame {
     self.snakeGameView.hidden = YES;
     self.startButton.hidden = NO;
@@ -98,14 +99,13 @@
     
     for (int i = 0; i<self.snake.snakeBody.count; i++) {
         Coordinate* bodyPoint = self.snake.snakeBody[i];
-        if (newFruit.coordinate.x == bodyPoint.x && newFruit.coordinate.y == bodyPoint.y) {
+        if (newFruit.coordinate == bodyPoint) {
             newFruit = [self generateNewFruit];
             break;
         }
     }
     
-    if (newFruit.coordinate.x == previousFruit.coordinate.x &&
-        newFruit.coordinate.y == previousFruit.coordinate.y) {
+    if (newFruit.coordinate == previousFruit.coordinate) {
         newFruit = [self generateNewFruit];
     }
     
@@ -310,11 +310,11 @@
 }
 
 // MARK: snakeGameViewDelegate
--(ASSnake*) snakeForSnakeGameView: (SnakeGameView*) snakeView {
-    return self.snake;
+-(NSMutableArray <Coordinate *> *) snakeGameViewWillReturnASSnakeBody: (ASSnakeGameView*) snakeGameView {
+    return self.snake.snakeBody;
 }
 
--(ASFruit*) fruitForSnakeGameView: (SnakeGameView*) snakeView {
+-(ASFruit*) snakeGameViewWillReturnASFruit: (ASSnakeGameView*) snakeView {
     return self.fruit;
 }
 
