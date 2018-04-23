@@ -11,7 +11,7 @@
 
 @implementation ASFruit
 -(instancetype) initWithGameField: (GameField*) gameField {
-    if ([super init]) {
+    if (self = [super init]) {
         NSInteger x = arc4random() % gameField.width;
         NSInteger y = arc4random() % gameField.height;
         Coordinate* coordinate = [[Coordinate alloc] initWithCoordinateX:x coordinateY:y];
@@ -21,7 +21,7 @@
 }
 
 -(instancetype) initWithCoordinate: (Coordinate*) coordinate {
-    if ([super init]) {
+    if (self = [super init]) {
         self.coordinate = coordinate;
     }
     return self;

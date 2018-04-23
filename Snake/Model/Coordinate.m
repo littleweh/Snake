@@ -11,7 +11,7 @@
 @implementation Coordinate
 -(instancetype) initWithCoordinateX:(NSInteger) x coordinateY:(NSInteger) y
 {
-    if ([super init]) {
+    if (self = [super init]) {
         self.x = x;
         self.y = y;
     }

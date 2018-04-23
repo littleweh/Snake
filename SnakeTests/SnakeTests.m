@@ -15,8 +15,8 @@
 @end
 
 @interface ASSnake ()
-@property (strong, atomic, readwrite) NSMutableArray* snakeBody;
-@property (assign, atomic, readwrite) ASSnakeDirection direction;
+@property (strong, nonatomic, readwrite) NSMutableArray* snakeBody;
+@property (assign, nonatomic, readwrite) ASSnakeDirection direction;
 
 
 @end

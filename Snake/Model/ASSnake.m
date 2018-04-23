@@ -13,9 +13,9 @@
     NSUInteger bodyLength;
     NSUInteger addLengthNum;
 }
-@property (strong, atomic, readwrite) NSMutableArray <Coordinate *> * snakeBody;
-@property (assign, atomic, readwrite) ASSnakeDirection direction;
-@property (strong, atomic, readwrite) GameField* gameField;
+@property (strong, nonatomic, readwrite) NSMutableArray <Coordinate *> * snakeBody;
+@property (assign, nonatomic, readwrite) ASSnakeDirection direction;
+@property (strong, nonatomic, readwrite) GameField* gameField;
 @end
 
 @implementation ASSnake
@@ -30,7 +30,7 @@
         return nil;
     }
 
-    if ([super init]) {
+    if (self = [super init]) {
         self.direction = ASSnakeDirectionLeft;
         bodyLength = 2;
         addLengthNum = 2;
