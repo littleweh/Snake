@@ -20,18 +20,18 @@
 
 -(id) copyWithZone:(NSZone *)zone
 {
-    Coordinate *coordinateCopy = [[Coordinate allocWithZone:zone] init];
+    Coordinate *anotherCoordinate = [[self class] allocWithZone:zone];
     
-    if (coordinateCopy) {
-        [coordinateCopy setX: self.x];
-        [coordinateCopy setY: self.y];
+    if (anotherCoordinate) {
+        [anotherCoordinate setX: self.x];
+        [anotherCoordinate setY: self.y];
     }
     
-    return coordinateCopy;
+    return anotherCoordinate;
 }
 
--(BOOL) isEqualToCoordinate: (Coordinate *) coordinate{
-    if (!coordinate || self.x != coordinate.x || self.y != coordinate.y){
+-(BOOL) isEqualToCoordinate: (Coordinate *) aCoordinate{
+    if (!aCoordinate || self.x != aCoordinate.x || self.y != aCoordinate.y){
         return NO;
     }
     return YES;

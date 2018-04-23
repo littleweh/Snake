@@ -6,10 +6,10 @@
 //  Copyright © 2018 Ada Kao. All rights reserved.
 //
 
-#import "Fruit.h"
+#import "ASFruit.h"
 
 
-@implementation Fruit
+@implementation ASFruit
 -(instancetype) initWithGameField: (GameField*) gameField {
     if ([super init]) {
         NSInteger x = arc4random() % gameField.width;

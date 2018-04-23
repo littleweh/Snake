@@ -8,7 +8,7 @@
 
 #import <XCTest/XCTest.h>
 #import "Coordinate.h"
-#import "Fruit.h"
+#import "ASFruit.h"
 
 @interface CoordinateTests : XCTestCase
 
@@ -56,7 +56,7 @@
 
 -(void) testIsEqualInvalidInput {
     Coordinate *point = [[Coordinate alloc]initWithCoordinateX:1 coordinateY:1];
-    Fruit *fruit = [[Fruit alloc]initWithCoordinate:point];
+    ASFruit *fruit = [[ASFruit alloc]initWithCoordinate:point];
     
     XCTAssertFalse([point isEqual:fruit], @"Coordinate is Equal invalid input failed");
 }

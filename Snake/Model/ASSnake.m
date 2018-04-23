@@ -6,19 +6,19 @@
 //  Copyright © 2018 Ada Kao. All rights reserved.
 //
 
-#import "Snake.h"
+#import "ASSnake.h"
 
-@interface Snake()
+@interface ASSnake()
 {
     NSUInteger bodyLength;
     NSUInteger addLengthNum;
 }
 @property (strong, atomic, readwrite) NSMutableArray <Coordinate *> * snakeBody;
-@property (assign, atomic, readwrite) Direction direction;
+@property (assign, atomic, readwrite) ASSnakeDirection direction;
 @property (strong, atomic, readwrite) GameField* gameField;
 @end
 
-@implementation Snake
+@implementation ASSnake
 
 -(instancetype) initWithGameField: (GameField*) gameField {
         
@@ -31,7 +31,7 @@
     }
 
     if ([super init]) {
-        self.direction = left;
+        self.direction = ASSnakeDirectionLeft;
         bodyLength = 2;
         addLengthNum = 2;
 
@@ -68,19 +68,19 @@
     Coordinate* oldHead = self.snakeBody.lastObject;
     Coordinate* newHead = [oldHead copy];
     switch (self.direction) {
-        case left:
+        case ASSnakeDirectionLeft:
             newHead.x = (oldHead.x-1) % self.gameField.width;
             if (newHead.x < 0) newHead.x += self.gameField.width;
             break;
-        case right:
+        case ASSnakeDirectionRight:
             newHead.x = (oldHead.x+1) % self.gameField.width;
             if (newHead.x < 0) newHead.x += self.gameField.width;
             break;
-        case up:
+        case ASSnakeDirectionUp:
             newHead.y = (oldHead.y-1) % self.gameField.height;
             if (newHead.y < 0) newHead.y += self.gameField.height;
             break;
-        case down:
+        case ASSnakeDirectionDown:
             newHead.y = (oldHead.y+1) % self.gameField.height;
             if (newHead.y < 0) newHead.y += self.gameField.height;
             break;
@@ -89,16 +89,16 @@
     [self snakeBodyDequeue];
 }
 
--(void) changeDirection: (Direction) direction {
+-(void) changeDirection: (ASSnakeDirection) direction {
     
-    NSAssert(direction == up || direction == down || direction == left || direction == right, @"Must be up, down, left, right");
+    NSAssert(direction == ASSnakeDirectionUp || direction == ASSnakeDirectionDown || direction == ASSnakeDirectionLeft || direction == ASSnakeDirectionRight, @"Must be up, down, left, right");
 
-    if (direction == left || direction == right) {
-        if (self.direction == up || self.direction == down) {
+    if (direction == ASSnakeDirectionLeft || direction == ASSnakeDirectionRight) {
+        if (self.direction == ASSnakeDirectionUp || self.direction == ASSnakeDirectionDown) {
             [self setDirection:direction];
         }
-    } else if (direction == up || direction == down) {
-        if (self.direction == left || self.direction == right) {
+    } else if (direction == ASSnakeDirectionUp || direction == ASSnakeDirectionDown) {
+        if (self.direction == ASSnakeDirectionLeft || self.direction == ASSnakeDirectionRight) {
             [self setDirection:direction];
         }
     }

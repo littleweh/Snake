@@ -10,7 +10,7 @@
 #import "Coordinate.h"
 #import "GameField.h"
 
-@interface Fruit : NSObject
+@interface ASFruit : NSObject
 @property (strong, atomic, readwrite) Coordinate* coordinate;
 -(instancetype) initWithGameField: (GameField*) gameField;
 -(instancetype) initWithCoordinate: (Coordinate*) coordinate;

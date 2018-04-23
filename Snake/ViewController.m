@@ -7,14 +7,14 @@
 //
 
 #import "ViewController.h"
-#import "Snake.h"
+#import "ASSnake.h"
 #import "SnakeGameView.h"
-#import "Fruit.h"
+#import "ASFruit.h"
 #import "GameField.h"
 
 @interface ViewController ()
-@property Snake* snake;
-@property Fruit* fruit;
+@property ASSnake* snake;
+@property ASFruit* fruit;
 @property NSTimer* myTimer;
 @property GameField* snakeGameField;
 @end
@@ -58,8 +58,8 @@
     self.startButton.hidden = YES;
     self.snakeGameView.hidden = NO;
     
-    self.snake = [[Snake alloc] initWithGameField:self.snakeGameField];
-    self.fruit = [[Fruit alloc] initWithGameField:self.snakeGameField];
+    self.snake = [[ASSnake alloc] initWithGameField:self.snakeGameField];
+    self.fruit = [[ASFruit alloc] initWithGameField:self.snakeGameField];
     
     [self.view layoutIfNeeded];
     [self.snakeGameView setNeedsLayout];
@@ -92,9 +92,9 @@
     }
 }
 
--(Fruit *) generateNewFruit {
-    Fruit * previousFruit = self.fruit;
-    Fruit * newFruit = [[Fruit alloc] initWithGameField:self.snakeGameField];
+-(ASFruit *) generateNewFruit {
+    ASFruit * previousFruit = self.fruit;
+    ASFruit * newFruit = [[ASFruit alloc] initWithGameField:self.snakeGameField];
     
     for (int i = 0; i<self.snake.snakeBody.count; i++) {
         Coordinate* bodyPoint = self.snake.snakeBody[i];
@@ -310,15 +310,15 @@
 }
 
 // MARK: snakeGameViewDelegate
--(Snake*) snakeForSnakeGameView: (SnakeGameView*) snakeView {
+-(ASSnake*) snakeForSnakeGameView: (SnakeGameView*) snakeView {
     return self.snake;
 }
 
--(Fruit*) fruitForSnakeGameView: (SnakeGameView*) snakeView {
+-(ASFruit*) fruitForSnakeGameView: (SnakeGameView*) snakeView {
     return self.fruit;
 }
 
--(void) snakeGameViewGetNewDirection: (Direction) newDirection {
+-(void) snakeGameViewGetNewDirection: (ASSnakeDirection) newDirection {
     [self.snake changeDirection:newDirection];
 }
 

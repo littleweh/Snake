@@ -7,16 +7,16 @@
 //
 
 #import <XCTest/XCTest.h>
-#import "Snake.h"
+#import "ASSnake.h"
 
 @interface SnakeTests : XCTestCase
 @property (strong, nonatomic, readwrite) GameField* myGameField;
-@property (strong, nonatomic, readwrite) Snake* mySnake;
+@property (strong, nonatomic, readwrite) ASSnake* mySnake;
 @end
 
-@interface Snake ()
+@interface ASSnake ()
 @property (strong, atomic, readwrite) NSMutableArray* snakeBody;
-@property (assign, atomic, readwrite) Direction direction;
+@property (assign, atomic, readwrite) ASSnakeDirection direction;
 
 
 @end
@@ -26,7 +26,7 @@
 - (void)setUp {
     [super setUp];
     self.myGameField = [[GameField alloc]initWithWidth:5 Height:5];
-    self.mySnake = [[Snake alloc]initWithGameField:self.myGameField];
+    self.mySnake = [[ASSnake alloc]initWithGameField:self.myGameField];
     
 }
 
@@ -38,19 +38,19 @@
 
 // MARK: initWithGameField:
 -(void) testInitWithGameFieldNotExist {
-    Snake* snake = [[Snake alloc]initWithGameField:nil];
+    ASSnake* snake = [[ASSnake alloc]initWithGameField:nil];
     XCTAssert(snake == nil, @"initWithGameField: with no gameField input -failed");
 }
 
 -(void) testInitWithGameFieldNotGameFieldClass {
-    Snake* snake = [[Snake alloc]initWithGameField: self.mySnake];
+    ASSnake* snake = [[ASSnake alloc]initWithGameField: self.mySnake];
     XCTAssert(snake == nil, @"initWithGameField: with input not GameField class -failed");
 }
 
 -(void) testInitWithGameField {
-    Snake* snake = [[Snake alloc]initWithGameField: self.myGameField];
-    XCTAssert([snake isKindOfClass:[Snake class]], @"snake init return Snake");
-    XCTAssert(snake.direction == left, @"snake init test, direction");
+    ASSnake* snake = [[ASSnake alloc]initWithGameField: self.myGameField];
+    XCTAssert([snake isKindOfClass:[ASSnake class]], @"snake init return Snake");
+    XCTAssert(snake.direction == ASSnakeDirectionLeft, @"snake init test, direction");
     XCTAssert(snake.snakeBody.count == 2, @"snake init test, body length");
     Coordinate *head = snake.snakeBody.lastObject;
     Coordinate *tail = snake.snakeBody.firstObject;
@@ -64,7 +64,7 @@
 // base cases: up, down, left, right
 - (void) testMoveOneStepToLeft {
     GameField *gameField = [[GameField alloc] initWithWidth:5 Height:5];
-    Snake *snake = [[Snake alloc]initWithGameField:gameField];
+    ASSnake *snake = [[ASSnake alloc]initWithGameField:gameField];
     [snake moveOneStep];
     Coordinate *head = snake.snakeBody.lastObject;
     Coordinate *tail = snake.snakeBody.firstObject;
@@ -76,14 +76,14 @@
 
 - (void) testMoveOneStepToRight {
     GameField *gameField = [[GameField alloc] initWithWidth:5 Height:5];
-    Snake *snake = [[Snake alloc]initWithGameField:gameField];
+    ASSnake *snake = [[ASSnake alloc]initWithGameField:gameField];
     
     NSMutableArray *body = [NSMutableArray array];
     [body addObject:[[Coordinate alloc]initWithCoordinateX:1 coordinateY:2]];
     [body addObject:[[Coordinate alloc] initWithCoordinateX:2 coordinateY:2]];
     snake.snakeBody = body;
     
-    [snake setDirection:right];
+    [snake setDirection:ASSnakeDirectionRight];
     [snake moveOneStep];
 
     Coordinate *head = snake.snakeBody.lastObject;
@@ -95,14 +95,14 @@
 
 - (void) testMoveOneStepToUp {
     GameField *gameField = [[GameField alloc] initWithWidth:5 Height:5];
-    Snake *snake = [[Snake alloc]initWithGameField:gameField];
+    ASSnake *snake = [[ASSnake alloc]initWithGameField:gameField];
     
     NSMutableArray *body = [NSMutableArray array];
     [body addObject:[[Coordinate alloc]initWithCoordinateX:2 coordinateY:3]];
     [body addObject:[[Coordinate alloc] initWithCoordinateX:2 coordinateY:2]];
     snake.snakeBody = body;
     
-    [snake setDirection:up];
+    [snake setDirection:ASSnakeDirectionUp];
     [snake moveOneStep];
     
     Coordinate *head = snake.snakeBody.lastObject;
@@ -114,14 +114,14 @@
 
 - (void) testMoveOneStepToDown {
     GameField *gameField = [[GameField alloc] initWithWidth:5 Height:5];
-    Snake *snake = [[Snake alloc]initWithGameField:gameField];
+    ASSnake *snake = [[ASSnake alloc]initWithGameField:gameField];
     
     NSMutableArray *body = [NSMutableArray array];
     [body addObject:[[Coordinate alloc]initWithCoordinateX:2 coordinateY:1]];
     [body addObject:[[Coordinate alloc] initWithCoordinateX:2 coordinateY:2]];
     snake.snakeBody = body;
     
-    [snake setDirection:down];
+    [snake setDirection:ASSnakeDirectionDown];
     [snake moveOneStep];
     
     Coordinate *head = snake.snakeBody.lastObject;
@@ -135,7 +135,7 @@
 
 -(void) testMoveOneStepOnLeftEdge {
     GameField *gameField = [[GameField alloc] initWithWidth:5 Height:5];
-    Snake *snake = [[Snake alloc]initWithGameField:gameField];
+    ASSnake *snake = [[ASSnake alloc]initWithGameField:gameField];
     NSMutableArray *body = [NSMutableArray array];
     [body addObject:[[Coordinate alloc] initWithCoordinateX:1 coordinateY:1]];
     [body addObject:[[Coordinate alloc] initWithCoordinateX:0 coordinateY:1]];
@@ -150,14 +150,14 @@
 
 -(void) testMoveOneStepOnRightEdge {
     GameField *gameField = [[GameField alloc] initWithWidth:5 Height:5];
-    Snake *snake = [[Snake alloc]initWithGameField:gameField];
+    ASSnake *snake = [[ASSnake alloc]initWithGameField:gameField];
     
     NSMutableArray *body = [NSMutableArray array];
     [body addObject:[[Coordinate alloc] initWithCoordinateX:3 coordinateY:2]];
     [body addObject:[[Coordinate alloc] initWithCoordinateX:4 coordinateY:2]];
     snake.snakeBody = body;
     
-    [snake setDirection:right];
+    [snake setDirection:ASSnakeDirectionRight];
     [snake moveOneStep];
     Coordinate *head = snake.snakeBody.lastObject;
     Coordinate *tail = snake.snakeBody.firstObject;
@@ -168,14 +168,14 @@
 
 -(void) testMoveOneStepOnUpEdge {
     GameField *gameField = [[GameField alloc] initWithWidth:5 Height:5];
-    Snake *snake = [[Snake alloc]initWithGameField:gameField];
+    ASSnake *snake = [[ASSnake alloc]initWithGameField:gameField];
     
     NSMutableArray *body = [NSMutableArray array];
     [body addObject:[[Coordinate alloc] initWithCoordinateX:2 coordinateY:1]];
     [body addObject:[[Coordinate alloc] initWithCoordinateX:2 coordinateY:0]];
     snake.snakeBody = body;
     
-    [snake setDirection:up];
+    [snake setDirection:ASSnakeDirectionUp];
     [snake moveOneStep];
     Coordinate *head = snake.snakeBody.lastObject;
     Coordinate *tail = snake.snakeBody.firstObject;
@@ -186,14 +186,14 @@
 
 -(void) testMoveOneStepOnDownEdge {
     GameField *gameField = [[GameField alloc] initWithWidth:5 Height:5];
-    Snake *snake = [[Snake alloc]initWithGameField:gameField];
+    ASSnake *snake = [[ASSnake alloc]initWithGameField:gameField];
     
     NSMutableArray *body = [NSMutableArray array];
     [body addObject:[[Coordinate alloc] initWithCoordinateX:2 coordinateY:3]];
     [body addObject:[[Coordinate alloc] initWithCoordinateX:2 coordinateY:4]];
     snake.snakeBody = body;
     
-    [snake setDirection:down];
+    [snake setDirection:ASSnakeDirectionDown];
     [snake moveOneStep];
     Coordinate *head = snake.snakeBody.lastObject;
     Coordinate *tail = snake.snakeBody.firstObject;
@@ -206,7 +206,7 @@
 
 -(void) testMoveOneStepOnCornerMoveUp {
     GameField *gameField = [[GameField alloc] initWithWidth:5 Height:5];
-    Snake *snake = [[Snake alloc]initWithGameField:gameField];
+    ASSnake *snake = [[ASSnake alloc]initWithGameField:gameField];
     NSMutableArray *body = [NSMutableArray array];
     [body addObject:[[Coordinate alloc] initWithCoordinateX:0 coordinateY:4]];
     [body addObject:[[Coordinate alloc] initWithCoordinateX:4 coordinateY:4]];
@@ -214,7 +214,7 @@
     [body addObject:[[Coordinate alloc] initWithCoordinateX:0 coordinateY:0]];
     
     snake.snakeBody = body;
-    [snake setDirection:up];
+    [snake setDirection:ASSnakeDirectionUp];
     [snake moveOneStep];
     
     Coordinate *head = snake.snakeBody.lastObject;
@@ -231,7 +231,7 @@
 
 -(void) testMoveOneStepOnCornerMoveLeft {
     GameField *gameField = [[GameField alloc] initWithWidth:5 Height:5];
-    Snake *snake = [[Snake alloc]initWithGameField:gameField];
+    ASSnake *snake = [[ASSnake alloc]initWithGameField:gameField];
     NSMutableArray *body = [NSMutableArray array];
     [body addObject:[[Coordinate alloc] initWithCoordinateX:4 coordinateY:0]];
     [body addObject:[[Coordinate alloc] initWithCoordinateX:4 coordinateY:4]];
@@ -239,7 +239,7 @@
     [body addObject:[[Coordinate alloc] initWithCoordinateX:0 coordinateY:0]];
     
     snake.snakeBody = body;
-    [snake setDirection:left];
+    [snake setDirection:ASSnakeDirectionLeft];
     [snake moveOneStep];
     
     Coordinate *head = snake.snakeBody.lastObject;
@@ -256,7 +256,7 @@
 
 -(void) testMoveOneStepOnCornerMoveRight {
     GameField *gameField = [[GameField alloc] initWithWidth:5 Height:5];
-    Snake *snake = [[Snake alloc]initWithGameField:gameField];
+    ASSnake *snake = [[ASSnake alloc]initWithGameField:gameField];
     NSMutableArray *body = [NSMutableArray array];
     [body addObject:[[Coordinate alloc] initWithCoordinateX:0 coordinateY:4]];
     [body addObject:[[Coordinate alloc] initWithCoordinateX:0 coordinateY:0]];
@@ -264,7 +264,7 @@
     [body addObject:[[Coordinate alloc] initWithCoordinateX:4 coordinateY:4]];
     
     snake.snakeBody = body;
-    [snake setDirection:right];
+    [snake setDirection:ASSnakeDirectionRight];
     [snake moveOneStep];
     
     Coordinate *head = snake.snakeBody.lastObject;
@@ -281,7 +281,7 @@
 
 -(void) testMoveOneStepOnCornerMoveDown {
     GameField *gameField = [[GameField alloc] initWithWidth:5 Height:5];
-    Snake *snake = [[Snake alloc]initWithGameField:gameField];
+    ASSnake *snake = [[ASSnake alloc]initWithGameField:gameField];
     NSMutableArray *body = [NSMutableArray array];
     [body addObject:[[Coordinate alloc] initWithCoordinateX:0 coordinateY:0]];
     [body addObject:[[Coordinate alloc] initWithCoordinateX:4 coordinateY:0]];
@@ -289,7 +289,7 @@
     [body addObject:[[Coordinate alloc] initWithCoordinateX:0 coordinateY:4]];
     
     snake.snakeBody = body;
-    [snake setDirection:down];
+    [snake setDirection:ASSnakeDirectionDown];
     [snake moveOneStep];
     
     Coordinate *head = snake.snakeBody.lastObject;
@@ -310,81 +310,81 @@
 
 -(void) testChangeDirectionToUp {
     GameField *gameField = [[GameField alloc] initWithWidth:4 Height:4];
-    Snake *snake = [[Snake alloc]initWithGameField:gameField];
-    [snake changeDirection:up];
-    XCTAssertEqual(snake.direction, up, @"snake direction: %u", snake.direction);
+    ASSnake *snake = [[ASSnake alloc]initWithGameField:gameField];
+    [snake changeDirection:ASSnakeDirectionUp];
+    XCTAssertEqual(snake.direction, ASSnakeDirectionUp, @"snake direction: %u", snake.direction);
     
-    [snake setDirection:right];
-    [snake changeDirection:up];
-    XCTAssertEqual(snake.direction, up, @"snake direction: %u", snake.direction);
+    [snake setDirection:ASSnakeDirectionRight];
+    [snake changeDirection:ASSnakeDirectionUp];
+    XCTAssertEqual(snake.direction, ASSnakeDirectionUp, @"snake direction: %u", snake.direction);
     
-    [snake setDirection:down];
-    [snake changeDirection:up];
-    XCTAssertEqual(snake.direction, down, @"snake direction: %u", snake.direction);
+    [snake setDirection:ASSnakeDirectionDown];
+    [snake changeDirection:ASSnakeDirectionUp];
+    XCTAssertEqual(snake.direction, ASSnakeDirectionDown, @"snake direction: %u", snake.direction);
     
-    [snake setDirection:up];
-    [snake changeDirection:up];
-    XCTAssertEqual(snake.direction, up, @"snake direction: %u", snake.direction);
+    [snake setDirection:ASSnakeDirectionUp];
+    [snake changeDirection:ASSnakeDirectionUp];
+    XCTAssertEqual(snake.direction, ASSnakeDirectionUp, @"snake direction: %u", snake.direction);
     
 }
 
 -(void) testChangeDirectionToDown {
     GameField *gameField = [[GameField alloc] initWithWidth:4 Height:4];
-    Snake *snake = [[Snake alloc]initWithGameField:gameField];
-    [snake changeDirection:down];
-    XCTAssertEqual(snake.direction, down, @"snake direction: %u", snake.direction);
+    ASSnake *snake = [[ASSnake alloc]initWithGameField:gameField];
+    [snake changeDirection:ASSnakeDirectionDown];
+    XCTAssertEqual(snake.direction, ASSnakeDirectionDown, @"snake direction: %u", snake.direction);
     
-    [snake setDirection:right];
-    [snake changeDirection:down];
-    XCTAssertEqual(snake.direction, down, @"snake direction: %u", snake.direction);
+    [snake setDirection:ASSnakeDirectionRight];
+    [snake changeDirection:ASSnakeDirectionDown];
+    XCTAssertEqual(snake.direction, ASSnakeDirectionDown, @"snake direction: %u", snake.direction);
     
-    [snake setDirection:down];
-    [snake changeDirection:down];
-    XCTAssertEqual(snake.direction, down, @"snake direction: %u", snake.direction);
+    [snake setDirection:ASSnakeDirectionDown];
+    [snake changeDirection:ASSnakeDirectionDown];
+    XCTAssertEqual(snake.direction, ASSnakeDirectionDown, @"snake direction: %u", snake.direction);
     
-    [snake setDirection:up];
-    [snake changeDirection:down];
-    XCTAssertEqual(snake.direction, up, @"snake direction: %u", snake.direction);
+    [snake setDirection:ASSnakeDirectionUp];
+    [snake changeDirection:ASSnakeDirectionDown];
+    XCTAssertEqual(snake.direction, ASSnakeDirectionUp, @"snake direction: %u", snake.direction);
     
 }
 
 -(void) testChangeDirectionToLeft {
     GameField *gameField = [[GameField alloc] initWithWidth:4 Height:4];
-    Snake *snake = [[Snake alloc]initWithGameField:gameField];
-    [snake changeDirection:left];
-    XCTAssertEqual(snake.direction, left, @"snake direction: %u", snake.direction);
+    ASSnake *snake = [[ASSnake alloc]initWithGameField:gameField];
+    [snake changeDirection:ASSnakeDirectionLeft];
+    XCTAssertEqual(snake.direction, ASSnakeDirectionLeft, @"snake direction: %u", snake.direction);
     
-    [snake setDirection:right];
-    [snake changeDirection:left];
-    XCTAssertEqual(snake.direction, right, @"snake direction: %u", snake.direction);
+    [snake setDirection:ASSnakeDirectionRight];
+    [snake changeDirection:ASSnakeDirectionLeft];
+    XCTAssertEqual(snake.direction, ASSnakeDirectionRight, @"snake direction: %u", snake.direction);
     
-    [snake setDirection:down];
-    [snake changeDirection:left];
-    XCTAssertEqual(snake.direction, left, @"snake direction: %u", snake.direction);
+    [snake setDirection:ASSnakeDirectionDown];
+    [snake changeDirection:ASSnakeDirectionLeft];
+    XCTAssertEqual(snake.direction, ASSnakeDirectionLeft, @"snake direction: %u", snake.direction);
     
-    [snake setDirection:up];
-    [snake changeDirection:left];
-    XCTAssertEqual(snake.direction, left, @"snake direction: %u", snake.direction);
+    [snake setDirection:ASSnakeDirectionUp];
+    [snake changeDirection:ASSnakeDirectionLeft];
+    XCTAssertEqual(snake.direction, ASSnakeDirectionLeft, @"snake direction: %u", snake.direction);
     
 }
 
 -(void) testChangeDirectionToRight {
     GameField *gameField = [[GameField alloc] initWithWidth:4 Height:4];
-    Snake *snake = [[Snake alloc]initWithGameField:gameField];
-    [snake changeDirection:right];
-    XCTAssertEqual(snake.direction, left, @"snake direction: %u", snake.direction);
+    ASSnake *snake = [[ASSnake alloc]initWithGameField:gameField];
+    [snake changeDirection:ASSnakeDirectionRight];
+    XCTAssertEqual(snake.direction, ASSnakeDirectionLeft, @"snake direction: %u", snake.direction);
     
-    [snake setDirection:right];
-    [snake changeDirection:right];
-    XCTAssertEqual(snake.direction, right, @"snake direction: %u", snake.direction);
+    [snake setDirection:ASSnakeDirectionRight];
+    [snake changeDirection:ASSnakeDirectionRight];
+    XCTAssertEqual(snake.direction, ASSnakeDirectionRight, @"snake direction: %u", snake.direction);
     
-    [snake setDirection:down];
-    [snake changeDirection:right];
-    XCTAssertEqual(snake.direction, right, @"snake direction: %u", snake.direction);
+    [snake setDirection:ASSnakeDirectionDown];
+    [snake changeDirection:ASSnakeDirectionRight];
+    XCTAssertEqual(snake.direction, ASSnakeDirectionRight, @"snake direction: %u", snake.direction);
     
-    [snake setDirection:up];
-    [snake changeDirection:right];
-    XCTAssertEqual(snake.direction, right, @"snake direction: %u", snake.direction);
+    [snake setDirection:ASSnakeDirectionUp];
+    [snake changeDirection:ASSnakeDirectionRight];
+    XCTAssertEqual(snake.direction, ASSnakeDirectionRight, @"snake direction: %u", snake.direction);
     
 }
 
@@ -397,7 +397,7 @@
 // Base case
 -(void) testAddBodyLengthTailOnRight {
     GameField *gameField = [[GameField alloc] initWithWidth:5 Height:5];
-    Snake *snake = [[Snake alloc] initWithGameField:gameField];
+    ASSnake *snake = [[ASSnake alloc] initWithGameField:gameField];
     
     NSMutableArray *body = [NSMutableArray array];
     Coordinate *head = [[Coordinate alloc] initWithCoordinateX:2 coordinateY:2];
@@ -415,7 +415,7 @@
 
 -(void) testAddBodyLengthTailOnLeft {
     GameField *gameField = [[GameField alloc] initWithWidth:5 Height:5];
-    Snake *snake = [[Snake alloc] initWithGameField:gameField];
+    ASSnake *snake = [[ASSnake alloc] initWithGameField:gameField];
     
     NSMutableArray *body = [NSMutableArray array];
     Coordinate *head = [[Coordinate alloc] initWithCoordinateX:2 coordinateY:2];
@@ -433,7 +433,7 @@
 
 -(void) testAddBodyLengthTailOnTop {
     GameField *gameField = [[GameField alloc] initWithWidth:5 Height:5];
-    Snake *snake = [[Snake alloc] initWithGameField:gameField];
+    ASSnake *snake = [[ASSnake alloc] initWithGameField:gameField];
     
     NSMutableArray *body = [NSMutableArray array];
     [body addObject:[[Coordinate alloc] initWithCoordinateX:2 coordinateY:1]];
@@ -449,7 +449,7 @@
 
 -(void) testAddBodyLengthTailOnBottom {
     GameField *gameField = [[GameField alloc] initWithWidth:5 Height:5];
-    Snake *snake = [[Snake alloc] initWithGameField:gameField];
+    ASSnake *snake = [[ASSnake alloc] initWithGameField:gameField];
     
     NSMutableArray *body = [NSMutableArray array];
     Coordinate *head = [[Coordinate alloc] initWithCoordinateX:2 coordinateY:2];
@@ -469,8 +469,8 @@
 
 - (void)testAddTailOnLeftEdge {
     GameField *gameField = [[GameField alloc] initWithWidth:5 Height:5];
-    Snake *snake = [[Snake alloc] initWithGameField:gameField];
-    [snake changeDirection:up];
+    ASSnake *snake = [[ASSnake alloc] initWithGameField:gameField];
+    [snake changeDirection:ASSnakeDirectionUp];
     NSMutableArray *body = [NSMutableArray array];
     [body addObject:[[Coordinate alloc] initWithCoordinateX:0 coordinateY:3]];
     [body addObject:[[Coordinate alloc] initWithCoordinateX:4 coordinateY:3]];
@@ -486,8 +486,8 @@
 
 - (void)testAddTailOnRightEdge {
     GameField *gameField = [[GameField alloc] initWithWidth:5 Height:5];
-    Snake *snake = [[Snake alloc] initWithGameField:gameField];
-    [snake changeDirection:up];
+    ASSnake *snake = [[ASSnake alloc] initWithGameField:gameField];
+    [snake changeDirection:ASSnakeDirectionUp];
     NSMutableArray *body = [NSMutableArray array];
     [body addObject:[[Coordinate alloc] initWithCoordinateX:4 coordinateY:3]];
     [body addObject:[[Coordinate alloc] initWithCoordinateX:0 coordinateY:3]];
@@ -503,8 +503,8 @@
 
 - (void)testAddTailOnTopEdge {
     GameField *gameField = [[GameField alloc] initWithWidth:5 Height:5];
-    Snake *snake = [[Snake alloc] initWithGameField:gameField];
-    [snake changeDirection:up];
+    ASSnake *snake = [[ASSnake alloc] initWithGameField:gameField];
+    [snake changeDirection:ASSnakeDirectionUp];
     NSMutableArray *body = [NSMutableArray array];
     [body addObject:[[Coordinate alloc] initWithCoordinateX:2 coordinateY:0]];
     [body addObject:[[Coordinate alloc] initWithCoordinateX:2 coordinateY:4]];
@@ -520,8 +520,8 @@
 
 - (void)testAddTailOnBottomEdge {
     GameField *gameField = [[GameField alloc] initWithWidth:5 Height:5];
-    Snake *snake = [[Snake alloc] initWithGameField:gameField];
-    [snake changeDirection:up];
+    ASSnake *snake = [[ASSnake alloc] initWithGameField:gameField];
+    [snake changeDirection:ASSnakeDirectionUp];
     NSMutableArray *body = [NSMutableArray array];
     [body addObject:[[Coordinate alloc] initWithCoordinateX:2 coordinateY:4]];
     [body addObject:[[Coordinate alloc] initWithCoordinateX:2 coordinateY:0]];
@@ -538,7 +538,7 @@
 // Extreme case: add tail (length > 1) on corner
 -(void) testAddTailCrossEdge {
     GameField *gameField = [[GameField alloc] initWithWidth:5 Height:5];
-    Snake *snake = [[Snake alloc] initWithGameField:gameField];
+    ASSnake *snake = [[ASSnake alloc] initWithGameField:gameField];
     
     NSMutableArray *body = [NSMutableArray array];
     [body addObject:[[Coordinate alloc]initWithCoordinateX:1 coordinateY:0]];
@@ -561,7 +561,7 @@
 
 -(void) testIsHeadHitBodyDefault {
     GameField *gameField = [[GameField alloc] initWithWidth:5 Height:5];
-    Snake *snake = [[Snake alloc] initWithGameField:gameField];
+    ASSnake *snake = [[ASSnake alloc] initWithGameField:gameField];
     
     NSMutableArray *body = [NSMutableArray array];
     [body addObject:[[Coordinate alloc] initWithCoordinateX:0 coordinateY:0]];
@@ -574,7 +574,7 @@
 
 -(void) testIsHeadHitBodyAfterMoveOneStepOnEdge {
     GameField *gameField = [[GameField alloc] initWithWidth:5 Height:5];
-    Snake *snake = [[Snake alloc] initWithGameField:gameField];
+    ASSnake *snake = [[ASSnake alloc] initWithGameField:gameField];
     
     NSMutableArray *body = [NSMutableArray array];
     [body addObject:[[Coordinate alloc]initWithCoordinateX:4 coordinateY:2]];
@@ -592,7 +592,7 @@
 
 -(void) testIsHeadHitBodyAfterMoveOneStepInCenter {
     GameField *gameField = [[GameField alloc] initWithWidth:5 Height:5];
-    Snake *snake = [[Snake alloc] initWithGameField:gameField];
+    ASSnake *snake = [[ASSnake alloc] initWithGameField:gameField];
     
     NSMutableArray *body = [NSMutableArray array];
     [body addObject:[[Coordinate alloc]initWithCoordinateX:3 coordinateY:4]];
@@ -602,11 +602,11 @@
     [body addObject:[[Coordinate alloc]initWithCoordinateX:1 coordinateY:2]];
     
     snake.snakeBody = body;
-    [snake changeDirection:up];
+    [snake changeDirection:ASSnakeDirectionUp];
     [snake moveOneStep];
-    [snake changeDirection:right];
+    [snake changeDirection:ASSnakeDirectionRight];
     [snake moveOneStep];
-    [snake changeDirection:down];
+    [snake changeDirection:ASSnakeDirectionDown];
     [snake moveOneStep];
     
     XCTAssertTrue([snake isHeadHitBody], @"isHeadHitBody failed in center");
@@ -615,7 +615,7 @@
 
 -(void) testIsHeadHitBodyAfterAddBodyLength {
     GameField *gameField = [[GameField alloc] initWithWidth:5 Height:5];
-    Snake *snake = [[Snake alloc] initWithGameField:gameField];
+    ASSnake *snake = [[ASSnake alloc] initWithGameField:gameField];
     
     NSMutableArray *body = [NSMutableArray array];
     [body addObject:[[Coordinate alloc]initWithCoordinateX:0 coordinateY:2]];
@@ -636,7 +636,7 @@
 
 -(void) testIsHeadHitPoint {
     GameField *gameField = [[GameField alloc] initWithWidth:4 Height:4];
-    Snake *snake = [[Snake alloc] initWithGameField:gameField];
+    ASSnake *snake = [[ASSnake alloc] initWithGameField:gameField];
     
     NSMutableArray *body = [NSMutableArray array];
     [body addObject:[[Coordinate alloc] initWithCoordinateX: 2 coordinateY: 3]];

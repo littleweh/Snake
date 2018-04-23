@@ -8,8 +8,8 @@
 
 #import "SnakeGameView.h"
 #import "Coordinate.h"
-#import "Snake.h"
-#import "Fruit.h"
+#import "ASSnake.h"
+#import "ASFruit.h"
 
 #define blockSize 20.0
 // ToDo: blockSize flexible
@@ -35,16 +35,16 @@
         UISwipeGestureRecognizerDirection direction = recognizer.direction;        
         switch (direction) {
             case UISwipeGestureRecognizerDirectionUp:
-                [self.delegate snakeGameViewGetNewDirection:up];
+                [self.delegate snakeGameViewGetNewDirection:ASSnakeDirectionUp];
                 break;
             case UISwipeGestureRecognizerDirectionDown:
-                [self.delegate snakeGameViewGetNewDirection:down];
+                [self.delegate snakeGameViewGetNewDirection:ASSnakeDirectionDown];
                 break;
             case UISwipeGestureRecognizerDirectionLeft:
-                [self.delegate snakeGameViewGetNewDirection:left];
+                [self.delegate snakeGameViewGetNewDirection:ASSnakeDirectionLeft];
                 break;
             case UISwipeGestureRecognizerDirectionRight:
-                [self.delegate snakeGameViewGetNewDirection:right];
+                [self.delegate snakeGameViewGetNewDirection:ASSnakeDirectionRight];
                 break;
         }
     }
@@ -54,11 +54,11 @@
     [super drawRect:rect];
     
     if ([self.delegate respondsToSelector:@selector(snakeForSnakeGameView:)]) {
-        Snake* snake = [delegate snakeForSnakeGameView:self];
+        ASSnake* snake = [delegate snakeForSnakeGameView:self];
         [self drawSnake:snake.snakeBody];
     }
     if ([self.delegate respondsToSelector:@selector(fruitForSnakeGameView:)]) {
-        Fruit* fruit = [delegate fruitForSnakeGameView:self];
+        ASFruit* fruit = [delegate fruitForSnakeGameView:self];
         [self drawFruit: fruit];
     }
     
@@ -94,7 +94,7 @@
     
 }
 
--(void) drawFruit: (Fruit*) fruit {
+-(void) drawFruit: (ASFruit*) fruit {
     if (fruit == nil) {
         return;
     }

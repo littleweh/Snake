@@ -9,8 +9,8 @@
 #import <Foundation/Foundation.h>
 
 @interface Coordinate : NSObject <NSCopying>
-@property (assign, atomic, readwrite) NSInteger x;
-@property (assign, atomic, readwrite) NSInteger y;
+@property (assign, nonatomic, readwrite) NSInteger x;
+@property (assign, nonatomic, readwrite) NSInteger y;
 -(instancetype) initWithCoordinateX:(NSInteger) x coordinateY:(NSInteger) y;
 -(id) copyWithZone:(NSZone *)zone;
 @end
