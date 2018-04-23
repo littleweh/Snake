@@ -15,15 +15,15 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import "Coordinate.h"
-#import "Snake.h"
-#import "Fruit.h"
+#import "ASSnake.h"
+#import "ASFruit.h"
 
 @class SnakeGameView;
 
 @protocol SnakeGameViewDelegate <NSObject>
--(Snake*) snakeForSnakeGameView: (SnakeGameView*) snakeGameView;
--(Fruit*) fruitForSnakeGameView: (SnakeGameView*) snakeGameView;
--(void) snakeGameViewGetNewDirection: (Direction) newDirection;
+-(ASSnake*) snakeForSnakeGameView: (SnakeGameView*) snakeGameView;
+-(ASFruit*) fruitForSnakeGameView: (SnakeGameView*) snakeGameView;
+-(void) snakeGameViewGetNewDirection: (ASSnakeDirection) newDirection;
 @end
 
 @interface SnakeGameView: UIView
