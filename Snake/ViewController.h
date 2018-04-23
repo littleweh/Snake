@@ -7,10 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SnakeGameView.h"
+#import "ASSnakeGameView.h"
 
 @interface ViewController : UIViewController <SnakeGameViewDelegate>
-@property (nonatomic, readwrite) SnakeGameView* snakeGameView;
+@property (nonatomic, readwrite) ASSnakeGameView* snakeGameView;
 @property (nonatomic, readwrite) UIButton* startButton;
 
 @end

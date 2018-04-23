@@ -18,19 +18,19 @@
 #import "ASSnake.h"
 #import "ASFruit.h"
 
-@class SnakeGameView;
+@class ASSnakeGameView;
 
 @protocol SnakeGameViewDelegate <NSObject>
--(ASSnake*) snakeForSnakeGameView: (SnakeGameView*) snakeGameView;
--(ASFruit*) fruitForSnakeGameView: (SnakeGameView*) snakeGameView;
+-(NSMutableArray <Coordinate *> *) snakeGameViewWillReturnASSnakeBody: (ASSnakeGameView*) snakeGameView;
+-(ASFruit*) snakeGameViewWillReturnASFruit: (ASSnakeGameView*) snakeGameView;
 -(void) snakeGameViewGetNewDirection: (ASSnakeDirection) newDirection;
 @end
 
-@interface SnakeGameView: UIView
+@interface ASSnakeGameView: UIView
 @property (weak, nonatomic) id <SnakeGameViewDelegate> delegate;
 @end
 
-@interface SnakeGameView()
+@interface ASSnakeGameView()
 -(CGPoint) modelPointToViewPoint: (Coordinate*) point;
 -(instancetype) initWithFrame: (CGRect) frame;
 -(void)passDirectionByHandlingGestureRecognizedBy: (UISwipeGestureRecognizer*) recognizer;

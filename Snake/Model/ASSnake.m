@@ -48,8 +48,7 @@
 
         NSMutableArray* body = [[NSMutableArray alloc] init];
         Coordinate* head = [[Coordinate alloc] initWithCoordinateX:centerX
-                                                       coordinateY:centerY
-                            ];
+                                                       coordinateY:centerY];
         [body insertObject:head atIndex:0];
         
         for (int i = 1; i < bodyLength; i++) {
@@ -135,8 +134,8 @@
 
 -(BOOL) isHeadHitPoint: (Coordinate*) point {
     
-    NSAssert(point.x >=0 && point.y >= 0, @"point x: %ld, y: %ld should be larger than or equal to 0");
-    NSAssert(point.x <self.gameField.width && point.y < self.gameField.height, @"point x: %ld, y: %ld should be less than game field width/ height");
+    NSAssert(point.x >=0 && point.y >= 0, @"point x: %ld, y: %ld should be larger than or equal to 0", point.x, point.y);
+    NSAssert(point.x <self.gameField.width && point.y < self.gameField.height, @"point x: %ld, y: %ld should be less than game field width/ height", point.x, point.y);
 
     Coordinate* snakeHead = [self.snakeBody.lastObject copy];
     return [snakeHead isEqual:point];    
