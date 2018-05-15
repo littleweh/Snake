@@ -17,6 +17,8 @@
 @property ASFruit* fruit;
 @property NSTimer* myTimer;
 @property GameField* snakeGameField;
+@property (readwrite) ASSnakeGameView * snakeGameView;
+@property (readwrite) UIButton * startButton;
 @end
 
 @implementation ViewController
@@ -120,53 +122,40 @@
     [self.startButton setTitle:@"Start" forState:UIControlStateNormal];
     [self.startButton addTarget:self action:@selector(startGame) forControlEvents:UIControlEventTouchUpInside];
     self.startButton.translatesAutoresizingMaskIntoConstraints = NO;
-
-    NSLayoutConstraint *centerX = [NSLayoutConstraint
-                                   constraintWithItem:self.startButton
-                                   attribute:NSLayoutAttributeCenterX
-                                   relatedBy:NSLayoutRelationEqual
-                                   toItem:self.view
-                                   attribute:NSLayoutAttributeCenterX
-                                   multiplier:1.0
-                                   constant:0.0
-                                   ];
-    NSLayoutConstraint *centerY = [NSLayoutConstraint
-                                   constraintWithItem:self.startButton
-                                   attribute:NSLayoutAttributeCenterY
-                                   relatedBy:NSLayoutRelationEqual
-                                   toItem:self.view
-                                   attribute:NSLayoutAttributeCenterY
-                                   multiplier:1.0
-                                   constant:0.0
-                                   ];
     
-    NSLayoutConstraint *width = [NSLayoutConstraint
-                                 constraintWithItem:self.startButton
+    [NSLayoutConstraint constraintWithItem:self.startButton
+                                 attribute:NSLayoutAttributeCenterX
+                                 relatedBy:NSLayoutRelationEqual
+                                    toItem:self.view
+                                 attribute:NSLayoutAttributeCenterX
+                                multiplier:1.0
+                                  constant:0.0 ].active = YES;
+
+    [NSLayoutConstraint constraintWithItem:self.startButton
+                                 attribute:NSLayoutAttributeCenterY
+                                 relatedBy:NSLayoutRelationEqual
+                                    toItem:self.view
+                                 attribute:NSLayoutAttributeCenterY
+                                multiplier:1.0
+                                  constant:0.0 ].active = YES;
+    
+    [NSLayoutConstraint constraintWithItem:self.startButton
                                  attribute:NSLayoutAttributeWidth
                                  relatedBy:NSLayoutRelationGreaterThanOrEqual
-                                 toItem:self.view
+                                    toItem:self.view
                                  attribute:NSLayoutAttributeWidth
-                                 multiplier:0.3
-                                 constant:0.0
-                                 ];
-
-    NSLayoutConstraint *height = [NSLayoutConstraint
-                                  constraintWithItem:self.startButton
-                                  attribute:NSLayoutAttributeHeight
-                                  relatedBy:NSLayoutRelationLessThanOrEqual
-                                  toItem:self.startButton
-                                  attribute:NSLayoutAttributeWidth
-                                  multiplier:1.6
-                                  constant:0.0
-                                  ];
-
-    [self.view addConstraint:centerX];
-    [self.view addConstraint:centerY];
-    [self.view addConstraint:width];
-    [self.startButton addConstraint:height];
+                                multiplier:0.3
+                                  constant:0.0 ].active = YES;
+    
+    [NSLayoutConstraint constraintWithItem:self.startButton
+                                 attribute:NSLayoutAttributeHeight
+                                 relatedBy:NSLayoutRelationLessThanOrEqual
+                                    toItem:self.startButton
+                                 attribute:NSLayoutAttributeWidth
+                                multiplier:1.6
+                                  constant:0.0 ].active = YES;
 
     [self.startButton layoutIfNeeded];
-
     self.startButton.layer.cornerRadius = 0.2 * self.startButton.frame.size.height;
     self.startButton.clipsToBounds = YES;
 }
@@ -174,118 +163,24 @@
 -(void) setupSnakeGameView {
     self.snakeGameView.backgroundColor = [UIColor whiteColor];
     self.snakeGameView.translatesAutoresizingMaskIntoConstraints = NO;
-    if (@available (iOS 11, *)) {
-        UILayoutGuide * guide = self.view.safeAreaLayoutGuide;
-
-        NSLayoutConstraint *leading = [NSLayoutConstraint
-                                       constraintWithItem:self.snakeGameView
-                                     attribute:NSLayoutAttributeLeading
-                                     relatedBy:NSLayoutRelationGreaterThanOrEqual
-                                        toItem:guide
-                                     attribute:NSLayoutAttributeLeading
-                                    multiplier:1.0
-                                      constant:10.0
-         ];
-
-        NSLayoutConstraint *trailing = [NSLayoutConstraint
-                                        constraintWithItem:self.snakeGameView
-                                     attribute:NSLayoutAttributeTrailing
-                                     relatedBy:NSLayoutRelationGreaterThanOrEqual
-                                        toItem:guide
-                                     attribute:NSLayoutAttributeTrailing
-                                    multiplier:1.0
-                                      constant:-10.0
-         ];
-        NSLayoutConstraint *top = [NSLayoutConstraint
-                                   constraintWithItem:self.snakeGameView
-                                     attribute:NSLayoutAttributeTop
-                                     relatedBy:NSLayoutRelationEqual
-                                        toItem:guide
-                                     attribute:NSLayoutAttributeTop
-                                    multiplier:1.0
-                                      constant:10
-         ];
-        NSLayoutConstraint *bottom = [NSLayoutConstraint
-                                      constraintWithItem:self.snakeGameView
-                                     attribute:NSLayoutAttributeBottom
-                                     relatedBy:NSLayoutRelationGreaterThanOrEqual
-                                        toItem:guide
-                                     attribute:NSLayoutAttributeBottom
-                                    multiplier:1.0
-                                      constant:-10
-         ];
-        NSLayoutConstraint *centerX = [NSLayoutConstraint
-                                       constraintWithItem:self.snakeGameView
-                                       attribute:NSLayoutAttributeCenterX
-                                       relatedBy:NSLayoutRelationEqual
-                                       toItem:guide
-                                       attribute:NSLayoutAttributeCenterX
-                                       multiplier:1.0
-                                       constant:0.0
-                                       ];
-
-        [self.view addConstraint:leading];
-        [self.view addConstraint:trailing];
-        [self.view addConstraint:top];
-        [self.view addConstraint:bottom];
-        [self.view addConstraint:centerX];
-    } else {
-        UILayoutGuide * margins = self.view.layoutMarginsGuide;
-        NSLayoutConstraint *top = [NSLayoutConstraint
-                                   constraintWithItem:self.snakeGameView
-                                     attribute:NSLayoutAttributeTop
-                                     relatedBy:NSLayoutRelationEqual
-                                        toItem:margins
-                                     attribute:NSLayoutAttributeTop
-                                    multiplier:1.0
-                                      constant:10
-         ];
-        NSLayoutConstraint *bottom = [NSLayoutConstraint
-                                      constraintWithItem:self.snakeGameView
-                                     attribute:NSLayoutAttributeBottom
-                                     relatedBy:NSLayoutRelationGreaterThanOrEqual
-                                        toItem:margins
-                                     attribute:NSLayoutAttributeBottom
-                                    multiplier:1.0
-                                      constant:-10
-         ];
-
-        NSLayoutConstraint *leading = [NSLayoutConstraint
-                                       constraintWithItem:self.snakeGameView
-                                     attribute:NSLayoutAttributeLeading
-                                     relatedBy:NSLayoutRelationGreaterThanOrEqual
-                                        toItem:margins
-                                     attribute:NSLayoutAttributeLeading
-                                    multiplier:1.0
-                                      constant:10
-         ];
-        NSLayoutConstraint *trailing = [NSLayoutConstraint
-                                        constraintWithItem:self.snakeGameView
-                                     attribute:NSLayoutAttributeTrailing
-                                     relatedBy:NSLayoutRelationGreaterThanOrEqual
-                                        toItem:margins
-                                     attribute:NSLayoutAttributeTrailing
-                                    multiplier:1.0
-                                      constant:-10
-         ];
-
-        NSLayoutConstraint *centerX = [NSLayoutConstraint
-                                       constraintWithItem:self.snakeGameView
-                                       attribute:NSLayoutAttributeCenterX
-                                       relatedBy:NSLayoutRelationEqual
-                                       toItem:margins
-                                       attribute:NSLayoutAttributeCenterX
-                                       multiplier:1.0
-                                       constant:0.0
-                                       ];
-
-        [self.view addConstraint:top];
-        [self.view addConstraint:bottom];
-        [self.view addConstraint:leading];
-        [self.view addConstraint:trailing];
-        [self.view addConstraint:centerX];
-        
-    }
+    
+    CGFloat padding = 10.0;
+    UIEdgeInsets newInsets = [self.view safeAreaInsets];
+    
+    CGFloat leftMargin = newInsets.left > 0 ? newInsets.left : padding;
+    CGFloat rightMargin = newInsets.right > 0 ? newInsets.right : padding;
+    CGFloat topMargin = newInsets.top > 0 ? newInsets.top : padding;
+    CGFloat bottomMargin = newInsets.bottom > 0 ? newInsets.bottom : padding;
+    
+    NSDictionary *metrics = @{
+                              @"topMargin" : @(topMargin),
+                              @"bottomMargin" : @(bottomMargin),
+                              @"leftMargin" : @(leftMargin),
+                              @"rightMargin" : @(rightMargin)
+                              };
+    
+    [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-topMargin-[_snakeGameView]-bottomMargin-|" options:0 metrics:metrics views:NSDictionaryOfVariableBindings(_snakeGameView)]];
+    [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-leftMargin-[_snakeGameView]-rightMargin-|" options:0 metrics:metrics views:NSDictionaryOfVariableBindings(_snakeGameView)]];
     
     [self.view layoutIfNeeded];
     
